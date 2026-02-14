@@ -18,6 +18,8 @@ namespace GymBro.Domain.Entities
         //public int CaloriesPerSession { get; set; }
         //public bool IsActive { get; set; }
 
+        public int WorkoutsPerWeek { get; set; }
+
 
         //  Внешний ключ для связи с UserProfile
         public int UserProfileId { get; set; }

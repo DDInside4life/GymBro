@@ -3,6 +3,7 @@ using GymBro.Domain.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
+
 namespace GymBro.Business.Managers
 {
     /// <summary>

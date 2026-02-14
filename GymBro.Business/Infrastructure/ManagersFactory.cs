@@ -21,26 +21,25 @@ namespace GymBro.Business.Infrastructure
             _unitOfWork = new GymBro.DAL.Repositories.EFUnitOfWork(connectionString);
         }
 
-        public ManagersFactory()
-        {
-        }
+
+
 
         /// <summary>
         /// Создать фабрику с конфигурацией из файла appsettings.json
         /// </summary>
-        //public ManagersFactory() : this(GetConnectionStringFromConfig())
-        //{
-        //}
+        public ManagersFactory() : this(GetConnectionStringFromConfig())
+        {
+        }
 
-        //private static string GetConnectionStringFromConfig()
-        //{
-        //    var configuration = new ConfigurationBuilder()
-        //        .SetBasePath(Directory.GetCurrentDirectory())
-        //        .AddJsonFile("appsettings.json")
-        //        .Build();
+        private static string GetConnectionStringFromConfig()
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-        //    return configuration.GetConnectionString("DefaultConnection");
-        //}
+            return configuration.GetConnectionString("DefaultConnection");
+        }
 
         /// <summary>
         /// Получить менеджер профилей пользователей

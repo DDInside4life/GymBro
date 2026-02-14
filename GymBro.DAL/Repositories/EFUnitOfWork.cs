@@ -22,7 +22,7 @@ namespace GymBro.DAL.Repositories
 
             // Создаем опции для DbContext
             var options = new DbContextOptionsBuilder<GymBroContext>()
-                //.UseSqlServer(connectionString)
+                .UseSqlServer(connectionString)
                 .Options;
 
             _context = new GymBroContext(options);

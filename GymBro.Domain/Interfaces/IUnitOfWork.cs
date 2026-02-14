@@ -1,4 +1,5 @@
 ﻿using GymBro.Domain.Entities;
+using GymBro.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
