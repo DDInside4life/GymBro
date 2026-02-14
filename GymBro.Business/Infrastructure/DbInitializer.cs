@@ -2,6 +2,7 @@
 using GymBro.DAL.Data;
 using System;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace GymBro.Business.Infrastructure
 {
@@ -9,7 +10,6 @@ namespace GymBro.Business.Infrastructure
     {
         public static void Initialize(GymBroContext context)
         {
-            // Убедимся, что база создана (если ещё не)
             context.Database.EnsureCreated();
 
             // Если уже есть пользователи – ничего не делаем
@@ -25,88 +25,86 @@ namespace GymBro.Business.Infrastructure
                 new Equipment { Name = "Беговая дорожка", Description = "Кардиотренажёр" },
                 new Equipment { Name = "Турник", Description = "Для подтягиваний" },
                 new Equipment { Name = "Брусья", Description = "Для отжиманий" }
-    };
+            };
             context.Equipment.AddRange(equipmentList);
             context.SaveChanges();
 
             // Добавляем упражнения с привязкой к оборудованию
             var exercises = new[]
             {
-        new Exercise
-        {
-            Name = "Жим штанги лёжа",
-            Description = "Базовое упражнение для грудных мышц",
-            DefaultSets = 4,
-            DefaultRepsMin = 8,
-            DefaultRepsMax = 12,
-            RestBetweenSets = TimeSpan.FromMinutes(2),
-            TechniqueTips = "Не отрывайте таз от скамьи, держите лопатки сведёнными",
-            CommonMistakes = "Слишком широкий хват, отбив штанги от груди",
-            ImageUrl = "benchpress.jpg",
-            VideoUrl = "benchpress.mp4",
-            Equipment = new List<Equipment> { equipmentList[0], equipmentList[2] } // штанга, скамья
-        },
-        new Exercise
-        {
-            Name = "Приседания со штангой",
-            Description = "Базовое упражнение для мышц ног",
-            DefaultSets = 4,
-            DefaultRepsMin = 8,
-            DefaultRepsMax = 12,
-            RestBetweenSets = TimeSpan.FromMinutes(2.5),
-            TechniqueTips = "Колени не должны выходить за носки, спина прямая",
-            CommonMistakes = "Округление спины, недостаточная глубина",
-            ImageUrl = "squat.jpg",
-            VideoUrl = "squat.mp4",
-            Equipment = new List<Equipment> { equipmentList[0] } // штанга
-        },
-        new Exercise
-        {
-            Name = "Тяга верхнего блока к груди",
-            Description = "Упражнение для широчайших мышц спины",
-            DefaultSets = 3,
-            DefaultRepsMin = 10,
-            DefaultRepsMax = 15,
-            RestBetweenSets = TimeSpan.FromMinutes(1.5),
-            TechniqueTips = "Локти направлены вниз и назад, сводите лопатки",
-            CommonMistakes = "Рывки корпусом, слишком широкий хват",
-            ImageUrl = "latpulldown.jpg",
-            VideoUrl = "latpulldown.mp4",
-            Equipment = new List<Equipment> { equipmentList[4] } // турник (условно, обычно тренажёр)
-        },
-        new Exercise
-        {
-            Name = "Бег на беговой дорожке",
-            Description = "Кардио упражнение",
-            DefaultSets = 1,
-            DefaultRepsMin = 20,
-            DefaultRepsMax = 30,
-            RestBetweenSets = TimeSpan.Zero,
-            TechniqueTips = "Сохраняйте ровный темп, следите за пульсом",
-            CommonMistakes = "Держание за поручни, слишком большой наклон",
-            ImageUrl = "treadmill.jpg",
-            VideoUrl = "treadmill.mp4",
-            Equipment = new List<Equipment> { equipmentList[3] } // беговая дорожка
-        },
-        new Exercise
-        {
-            Name = "Подтягивания",
-            Description = "Упражнение для спины и бицепса",
-            DefaultSets = 3,
-            DefaultRepsMin = 5,
-            DefaultRepsMax = 12,
-            RestBetweenSets = TimeSpan.FromMinutes(2),
-            TechniqueTips = "Тяните локти вниз, не раскачивайтесь",
-            CommonMistakes = "Рывки, неполная амплитуда",
-            ImageUrl = "pullups.jpg",
-            VideoUrl = "pullups.mp4",
-            Equipment = new List<Equipment> { equipmentList[4] } // турник
-        }
-    };
+                new Exercise
+                {
+                    Name = "Жим штанги лёжа",
+                    Description = "Базовое упражнение для грудных мышц",
+                    DefaultSets = 4,
+                    DefaultRepsMin = 8,
+                    DefaultRepsMax = 12,
+                    RestBetweenSets = TimeSpan.FromMinutes(2),
+                    TechniqueTips = "Не отрывайте таз от скамьи, держите лопатки сведёнными",
+                    CommonMistakes = "Слишком широкий хват, отбив штанги от груди",
+                    ImageUrl = "benchpress.jpg",
+                    VideoUrl = "benchpress.mp4",
+                    Equipment = new List<Equipment> { equipmentList[0], equipmentList[2] } // штанга, скамья
+                },
+                new Exercise
+                {
+                    Name = "Приседания со штангой",
+                    Description = "Базовое упражнение для мышц ног",
+                    DefaultSets = 4,
+                    DefaultRepsMin = 8,
+                    DefaultRepsMax = 12,
+                    RestBetweenSets = TimeSpan.FromMinutes(2.5),
+                    TechniqueTips = "Колени не должны выходить за носки, спина прямая",
+                    CommonMistakes = "Округление спины, недостаточная глубина",
+                    ImageUrl = "squat.jpg",
+                    VideoUrl = "squat.mp4",
+                    Equipment = new List<Equipment> { equipmentList[0] } // штанга
+                },
+                new Exercise
+                {
+                    Name = "Тяга верхнего блока к груди",
+                    Description = "Упражнение для широчайших мышц спины",
+                    DefaultSets = 3,
+                    DefaultRepsMin = 10,
+                    DefaultRepsMax = 15,
+                    RestBetweenSets = TimeSpan.FromMinutes(1.5),
+                    TechniqueTips = "Локти направлены вниз и назад, сводите лопатки",
+                    CommonMistakes = "Рывки корпусом, слишком широкий хват",
+                    ImageUrl = "latpulldown.jpg",
+                    VideoUrl = "latpulldown.mp4",
+                    Equipment = new List<Equipment> { equipmentList[4] } // турник
+                },
+                new Exercise
+                {
+                    Name = "Бег на беговой дорожке",
+                    Description = "Кардио упражнение",
+                    DefaultSets = 1,
+                    DefaultRepsMin = 20,
+                    DefaultRepsMax = 30,
+                    RestBetweenSets = TimeSpan.Zero,
+                    TechniqueTips = "Сохраняйте ровный темп, следите за пульсом",
+                    CommonMistakes = "Держание за поручни, слишком большой наклон",
+                    ImageUrl = "treadmill.jpg",
+                    VideoUrl = "treadmill.mp4",
+                    Equipment = new List<Equipment> { equipmentList[3] } // беговая дорожка
+                },
+                new Exercise
+                {
+                    Name = "Подтягивания",
+                    Description = "Упражнение для спины и бицепса",
+                    DefaultSets = 3,
+                    DefaultRepsMin = 5,
+                    DefaultRepsMax = 12,
+                    RestBetweenSets = TimeSpan.FromMinutes(2),
+                    TechniqueTips = "Тяните локти вниз, не раскачивайтесь",
+                    CommonMistakes = "Рывки, неполная амплитуда",
+                    ImageUrl = "pullups.jpg",
+                    VideoUrl = "pullups.mp4",
+                    Equipment = new List<Equipment> { equipmentList[4] } // турник
+                }
+            };
             context.Exercises.AddRange(exercises);
             context.SaveChanges();
-
-
 
             // Добавляем пользователей
             var users = new[]
@@ -145,7 +143,6 @@ namespace GymBro.Business.Infrastructure
             context.UserProfiles.AddRange(users);
             context.SaveChanges();
 
-            // Получаем Id добавленных пользователей
             var userIds = users.Select(u => u.Id).ToArray();
 
             // Добавляем тренировочные программы
@@ -160,7 +157,7 @@ namespace GymBro.Business.Infrastructure
                     Difficulty = 4,
                     WorkoutsPerWeek = 4,
                     CreatedDate = DateTime.Now,
-                    UserProfileId = userIds[0] // Кулеш Роман
+                    UserProfileId = userIds[0]
                 },
                 new TrainingProgram
                 {
@@ -171,7 +168,7 @@ namespace GymBro.Business.Infrastructure
                     Difficulty = 3,
                     WorkoutsPerWeek = 5,
                     CreatedDate = DateTime.Now,
-                    UserProfileId = userIds[1] // Анна Смирнова
+                    UserProfileId = userIds[1]
                 },
                 new TrainingProgram
                 {
@@ -182,74 +179,25 @@ namespace GymBro.Business.Infrastructure
                     Difficulty = 2,
                     WorkoutsPerWeek = 3,
                     CreatedDate = DateTime.Now,
-                    UserProfileId = userIds[2] // Дмитрий Петров
+                    UserProfileId = userIds[2]
                 }
             };
             context.TrainingPrograms.AddRange(programs);
             context.SaveChanges();
 
-            // Добавляем упражнения
-             exercises = new[]
+            // Добавляем тестового пользователя для входа
+            if (!context.Users.Any())
             {
-                new Exercise
+                var testUser = new User
                 {
-                    Name = "Жим штанги лёжа",
-                    Description = "Базовое упражнение для грудных мышц",
-                    DefaultSets = 4,
-                    DefaultRepsMin = 8,
-                    DefaultRepsMax = 12,
-                    RestBetweenSets = TimeSpan.FromMinutes(2),
-                    TechniqueTips = "Не отрывайте таз от скамьи, держите лопатки сведёнными",
-                    CommonMistakes = "Слишком широкий хват, отбив штанги от груди",
-                    ImageUrl = "benchpress.jpg",
-                    VideoUrl = "benchpress.mp4",
-                    EquipmentNeeded = "штанга, скамья, блины"
-                },
-                new Exercise
-                {
-                    Name = "Приседания со штангой",
-                    Description = "Базовое упражнение для мышц ног",
-                    DefaultSets = 4,
-                    DefaultRepsMin = 8,
-                    DefaultRepsMax = 12,
-                    RestBetweenSets = TimeSpan.FromMinutes(2.5),
-                    TechniqueTips = "Колени не должны выходить за носки, спина прямая",
-                    CommonMistakes = "Округление спины, недостаточная глубина",
-                    ImageUrl = "squat.jpg",
-                    VideoUrl = "squat.mp4",
-                    EquipmentNeeded = "штанга, стойка"
-                },
-                new Exercise
-                {
-                    Name = "Тяга верхнего блока к груди",
-                    Description = "Упражнение для широчайших мышц спины",
-                    DefaultSets = 3,
-                    DefaultRepsMin = 10,
-                    DefaultRepsMax = 15,
-                    RestBetweenSets = TimeSpan.FromMinutes(1.5),
-                    TechniqueTips = "Локти направлены вниз и назад, сводите лопатки",
-                    CommonMistakes = "Рывки корпусом, слишком широкий хват",
-                    ImageUrl = "latpulldown.jpg",
-                    VideoUrl = "latpulldown.mp4",
-                    EquipmentNeeded = "тренажёр, V-рукоять"
-                },
-                new Exercise
-                {
-                    Name = "Бег на беговой дорожке",
-                    Description = "Кардио упражнение",
-                    DefaultSets = 1,
-                    DefaultRepsMin = 20,
-                    DefaultRepsMax = 30,
-                    RestBetweenSets = TimeSpan.Zero,
-                    TechniqueTips = "Сохраняйте ровный темп, следите за пульсом",
-                    CommonMistakes = "Держание за поручни, слишком большой наклон",
-                    ImageUrl = "treadmill.jpg",
-                    VideoUrl = "treadmill.mp4",
-                    EquipmentNeeded = "беговая дорожка"
-                }
-            };
-            context.Exercises.AddRange(exercises);
-            context.SaveChanges();
+                    Login = "admin",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("admin123"),
+                    Email = "admin@example.com",
+                    FullName = "Administrator"
+                };
+                context.Users.Add(testUser);
+                context.SaveChanges();
+            }
         }
     }
 }

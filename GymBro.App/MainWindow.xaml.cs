@@ -10,16 +10,23 @@ namespace GymBro.App
     {
         public MainWindow()
         {
-            InitializeComponent();
-
-            // Подписываемся на событие навигации из ViewModel
-            if (DataContext is MainWindowViewModel vm)
+            try
             {
-                vm.NavigationRequested += OnNavigationRequested;
-                // Инициализируем стартовую страницу
-                vm.NavigateCommand.Execute("Home");
+                InitializeComponent();
+
+                if (DataContext is MainWindowViewModel vm)
+                {
+                    vm.NavigationRequested += OnNavigationRequested;
+                    vm.NavigateCommand.Execute("Home");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка в MainWindow: {ex.Message}\n\n{ex.StackTrace}");
+                throw;
             }
         }
+
 
         private void OnNavigationRequested(object sender, string pageKey)
         {
@@ -82,6 +89,7 @@ namespace GymBro.App
                     profileWindow.Owner = this;
                     profileWindow.ShowDialog();
                     break;
+
 
             }
         }
