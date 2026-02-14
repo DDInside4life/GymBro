@@ -19,7 +19,7 @@ namespace GymBro.App.Views
     {
         public ProgramSelectionWindow()
         {
-
+            InitializeComponent();
         }
     }
 }

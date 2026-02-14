@@ -20,7 +20,7 @@ namespace GymBro.App.Pages
     {
         public WorkoutPage()
         {
-            //InitializeComponent();
+            InitializeComponent();
         }
     }
 }

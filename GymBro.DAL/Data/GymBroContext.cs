@@ -22,6 +22,15 @@ namespace GymBro.DAL.Data
         // Таблица тренировочных программ
         public DbSet<TrainingProgram> TrainingPrograms { get; set; }
 
+        // Таблица упражнений
+        public DbSet<Exercise> Exercises { get; set; }
+
+        // Таблица оборудования
+        public DbSet<Equipment> Equipment { get; set; }
+
+        // Таблица пользователей
+        public DbSet<User> Users { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Настройка связи один-ко-многим
@@ -58,6 +67,44 @@ namespace GymBro.DAL.Data
                 .Property(p => p.ProgramType)
                 .IsRequired()
                 .HasMaxLength(50);
+
+            modelBuilder.Entity<Exercise>(entity =>
+            {
+                entity.Property(e => e.Name)
+                      .IsRequired()
+                      .HasMaxLength(100);
+                entity.Property(e => e.Description)
+                      .HasMaxLength(500);
+                entity.Property(e => e.TechniqueTips)
+                      .HasMaxLength(500);
+                entity.Property(e => e.CommonMistakes)
+                      .HasMaxLength(500);
+                entity.Property(e => e.ImageUrl)
+                      .HasMaxLength(255);
+                entity.Property(e => e.VideoUrl)
+                      .HasMaxLength(255);
+            });
+
+            modelBuilder.Entity<Exercise>()
+                 .HasMany(e => e.Equipment)
+                 .WithMany(eq => eq.Exercises)
+                 .UsingEntity(j => j.ToTable("ExerciseEquipment"));
+            
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.HasIndex(u => u.Login).IsUnique(); // Логин должен быть уникальным
+                entity.Property(u => u.Login).IsRequired().HasMaxLength(50);
+                entity.Property(u => u.PasswordHash).IsRequired();
+                entity.Property(u => u.Email).IsRequired().HasMaxLength(100);
+                entity.Property(u => u.FullName).HasMaxLength(100);
+
+                // Связь один к одному с UserProfile
+                entity.HasOne(u => u.UserProfile)
+                      .WithOne() // или .WithOne(up => up.User), если у UserProfile есть навигация
+                      .HasForeignKey<User>(u => u.UserProfileId)
+                      .OnDelete(DeleteBehavior.SetNull);
+            });
         }
+
     }
 }

@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using GymBro.App.ViewModels;
+using GymBro.Domain.Entities;
+using System.Windows;
 using System.Windows.Controls;
-using GymBro.App.ViewModels;
+using GymBro.App.Views;
 
 namespace GymBro.App
 {
@@ -25,7 +27,30 @@ namespace GymBro.App
             switch (pageKey)
             {
                 case "Home":
-                    MainContentFrame.Navigate(new Pages.HomePage());
+                    var homePage = new Pages.HomePage();
+
+                    // Подписка на события HomePage
+                    homePage.StartWorkoutClicked += (s, e) =>
+                    {
+                        var workoutWindow = new WorkoutSessionWindow(); // откроется окно тренировки
+                        workoutWindow.Owner = this;
+                        workoutWindow.ShowDialog();
+                    };
+
+                    homePage.ViewProgramClicked += (s, e) =>
+                    {
+                        var programWindow = new ProgramSelectionWindow(); // откроется окно выбора программы
+                        programWindow.Owner = this;
+                        programWindow.ShowDialog();
+                    };
+
+                    homePage.ViewProgressClicked += (s, e) =>
+                    {
+                        // Если нужно открыть страницу прогресса (например, уже есть ProgressPage)
+                        MainContentFrame.Navigate(new Pages.ProgressPage());
+                    };
+
+                    MainContentFrame.Navigate(homePage);
                     break;
                 case "Workout":
                     MainContentFrame.Navigate(new Pages.WorkoutPage());
@@ -43,11 +68,21 @@ namespace GymBro.App
                     MainContentFrame.Navigate(new Pages.SettingsPage());
                     break;
                 case "Profile":
-                    // Открываем окно профиля (не страницу)
-                    var profileWindow = new UserProfileWindow();
+                    var currentUser = new UserProfile
+                    {
+                        Name = "Кулеш Роман",
+                        Age = 25,
+                        Weight = 80,
+                        Height = 180,
+                        BirthDate = new DateTime(1998, 5, 15),
+                        FitnessLevel = "Продвинутый",
+                        TrainingGoal = "Набор массы"
+                    };
+                    var profileWindow = new UserProfileWindow(currentUser);
                     profileWindow.Owner = this;
                     profileWindow.ShowDialog();
                     break;
+
             }
         }
     }

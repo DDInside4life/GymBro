@@ -12,7 +12,7 @@ namespace GymBro.Domain.Entities
         //public ExerciseType ExerciseType { get; set; }
         //public List<BodyPart> PrimaryMuscles { get; set; }
         //public List<BodyPart> SecondaryMuscles { get; set; }
-        public List<string> EquipmentNeeded { get; set; }
+        public string EquipmentNeeded { get; set; }
         public string TechniqueTips { get; set; }
         public string CommonMistakes { get; set; }
         public string ImageUrl { get; set; } // Изображение техники
@@ -30,8 +30,9 @@ namespace GymBro.Domain.Entities
 
         // Навигационные свойства
         public TrainingProgram TrainingProgram { get; set; }
+        public ICollection<Equipment> Equipment { get; set; }
         //public ProgramDay ProgramDay { get; set; }
-        public ICollection<WorkoutSession> WorkoutSessions { get; set; }
+        //public ICollection<WorkoutSession> WorkoutSessions { get; set; }
     }
 
 

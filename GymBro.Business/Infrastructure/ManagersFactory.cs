@@ -1,5 +1,7 @@
 ﻿using GymBro.Business.Managers;
+using GymBro.DAL.Data;
 using GymBro.Domain.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
@@ -14,6 +16,13 @@ namespace GymBro.Business.Infrastructure
         private readonly IUnitOfWork _unitOfWork;
         private UserProfileManager _userProfileManager;
         private TrainingProgramManager _trainingProgramManager;
+        private UserManager _userManager;
+        public UserManager GetUserManager()
+        {
+            return _userManager ??= new UserManager(_unitOfWork);
+        }
+
+
 
         public ManagersFactory(string connectionString)
         {
@@ -56,5 +65,19 @@ namespace GymBro.Business.Infrastructure
         {
             return _trainingProgramManager ??= new TrainingProgramManager(_unitOfWork);
         }
+
+        public void InitializeDatabase()
+        {
+            // Получаем доступ к контексту через рефлексию или добавим в EFUnitOfWork свойство для контекста.
+            using (var context = new GymBro.DAL.Data.GymBroContext(
+                new DbContextOptionsBuilder<GymBroContext>()
+                    .UseSqlServer(GetConnectionStringFromConfig())
+                    .Options))
+            {
+                DbInitializer.Initialize(context);
+            }
+        }
+
+  
     }
 }

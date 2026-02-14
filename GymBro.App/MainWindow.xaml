@@ -72,7 +72,7 @@
                             Tag="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
                     <Button Content="📋 Тренировка" Style="{StaticResource NavigationButtonStyle}" 
                             Tag="Workout" Command="{Binding NavigateCommand}" CommandParameter="Workout"/>
-                    <Button Content="📊 Программы" Style="{StaticResource NavigationButtonStyle}" 
+                    <Button Content="📊 Мои программы" Style="{StaticResource NavigationButtonStyle}" 
                             Tag="Programs" Command="{Binding NavigateCommand}" CommandParameter="Programs"/>
                     <Button Content="💪 Упражнения" Style="{StaticResource NavigationButtonStyle}" 
                             Tag="Exercises" Command="{Binding NavigateCommand}" CommandParameter="Exercises"/>

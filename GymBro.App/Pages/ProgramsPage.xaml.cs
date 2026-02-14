@@ -20,9 +20,9 @@ namespace GymBro.App.Pages
     {
         public ProgramsPage()
         {
-            //InitializeComponent();
+            InitializeComponent();
 
-          
+
         }
     }
 }

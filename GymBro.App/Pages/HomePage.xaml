@@ -62,7 +62,7 @@
                             CornerRadius="15"
                             Padding="25">
                         <StackPanel>
-                            <TextBlock Text="Моя программа"
+                            <TextBlock Text="Программы тренировок"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="#2C3E50"
@@ -89,7 +89,7 @@
                             CornerRadius="15"
                             Padding="25">
                         <StackPanel>
-                            <TextBlock Text="Мой прогресс"
+                            <TextBlock Text="Изменить программу"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="#2C3E50"
@@ -98,7 +98,7 @@
                                        FontSize="14"
                                        Foreground="#7F8C8D"
                                        TextWrapping="Wrap"/>
-                            <Button Content="Анализ"
+                            <Button Content="Редактировать"
                                     Background="#E74C3C"
                                     Foreground="White"
                                     FontSize="14"

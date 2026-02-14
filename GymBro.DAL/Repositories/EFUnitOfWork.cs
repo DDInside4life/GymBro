@@ -1,4 +1,5 @@
 ﻿using GymBro.DAL.Data;
+using GymBro.Domain.Entities;
 using GymBro.Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,6 +15,9 @@ namespace GymBro.DAL.Repositories
         private readonly GymBroContext _context;
         private IRepository<Domain.Entities.UserProfile> _userProfilesRepository;
         private IRepository<Domain.Entities.TrainingProgram> _trainingProgramsRepository;
+        private IRepository<Domain.Entities.Exercise> _exercise;
+        private IRepository<User> _usersRepository;
+        public IRepository<User> UsersRepository => _usersRepository ??= new UserRepository(_context);
 
         public EFUnitOfWork(string connectionString)
         {
@@ -46,6 +50,8 @@ namespace GymBro.DAL.Repositories
                 return _trainingProgramsRepository ??= new TrainingProgramRepository(_context);
             }
         }
+
+     
 
         public void SaveChanges()
         {

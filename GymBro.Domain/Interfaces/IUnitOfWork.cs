@@ -12,6 +12,7 @@ namespace GymBro.Domain.Interfaces
     {
         IRepository<Entities.UserProfile> UserProfilesRepository { get; }
         IRepository<Entities.TrainingProgram> TrainingProgramsRepository { get; }
+        IRepository<User> UsersRepository { get; }
         void SaveChanges();
     }
 }

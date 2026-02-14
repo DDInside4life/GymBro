@@ -1,25 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GymBro.Domain.Entities;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GymBro.App.Views
 {
-    /// <summary>
-    /// Interaction logic for UserProfileWindow.xaml
-    /// </summary>
     public partial class UserProfileWindow : Window
     {
-        public UserProfileWindow()
+        public UserProfileWindow(UserProfile user)
         {
-
+            InitializeComponent();
+            var vm = new ViewModels.UserProfileViewModel(user);
+            vm.CloseRequested += (s, result) => { DialogResult = result; Close(); };
+            DataContext = vm;
         }
     }
 }

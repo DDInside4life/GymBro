@@ -1,14 +1,80 @@
-﻿<Page
+﻿<Page x:Class="GymBro.App.Pages.WorkoutPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="GymBro.App.WorkoutPage"
-      Title="Тренировки" d:DesignHeight="192.369" d:DesignWidth="443.744">
+      xmlns:vm="clr-namespace:GymBro.App.ViewModels"
+      Title="Тренировка">
+    <Page.DataContext>
+        <vm:WorkoutPageViewModel />
+    </Page.DataContext>
 
     <Grid Background="#F5F7FA">
-        <TextBlock Text="Страница тренировок"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   FontSize="24"
-                   Foreground="#2C3E50"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="30">
+                <!-- Заголовок -->
+                <TextBlock Text="Сегодняшняя тренировка" 
+                           Style="{StaticResource Heading1Style}"/>
+
+                <!-- Прогресс (пример) -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel>
+                            <TextBlock Text="Прогресс тренировки" 
+                                       FontSize="16" 
+                                       Foreground="#7F8C8D"
+                                       Margin="0,0,0,5"/>
+                            <ProgressBar Value="40" 
+                                         Height="10" 
+                                         Width="300" 
+                                         Foreground="#2ECC71"
+                                         Background="#ECF0F1"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" 
+                                   Text="2/5 упражнений" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#2C3E50"
+                                   VerticalAlignment="Center"/>
+                    </Grid>
+                </Border>
+
+                <!-- Список упражнений -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="Упражнения" 
+                                   FontSize="18" 
+                                   FontWeight="SemiBold" 
+                                   Foreground="#2C3E50" 
+                                   Margin="0,0,0,15"/>
+                        <ListBox Grid.Row="1" 
+                                 ItemsSource="{Binding TodayExercises}" 
+                                 SelectedItem="{Binding SelectedExercise}"
+                                 Style="{StaticResource CardListBoxStyle}"
+                                 ItemContainerStyle="{StaticResource CardListItemStyle}"
+                                 Height="200"/>
+                    </Grid>
+                </Border>
+
+                <!-- Кнопки управления -->
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                    <Button Content="▶ Начать тренировку" 
+                            Command="{Binding StartWorkoutCommand}" 
+                            Style="{StaticResource PrimaryButtonStyle}"
+                            Width="200"/>
+                    <Button Content="⏸ Пропустить" 
+                            Command="{Binding CompleteSetCommand}" 
+                            Style="{StaticResource SecondaryButtonStyle}"
+                            Width="150"
+                            Margin="10,0,0,0"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
 </Page>

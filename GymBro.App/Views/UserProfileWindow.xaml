@@ -1,4 +1,4 @@
-﻿<Window x:Class="GymBro.App.UserProfileWindow"
+﻿<Window  x:Class="GymBro.App.Views.UserProfileWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Мой профиль" 
@@ -82,7 +82,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <TextBox Text="Алексей"
+                                <TextBox Text="Роман"
                                          FontSize="16"
                                          Padding="10"
                                          BorderBrush="#BDC3C7"
@@ -96,7 +96,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <TextBox Text="Иванов"
+                                <TextBox Text="Кулеш"
                                          FontSize="16"
                                          Padding="10"
                                          BorderBrush="#BDC3C7"
@@ -110,7 +110,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <TextBox Text="alexey@example.com"
+                                <TextBox Text="example@example.com"
                                          FontSize="16"
                                          Padding="10"
                                          BorderBrush="#BDC3C7"
@@ -124,7 +124,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <DatePicker SelectedDate="1990-05-15"
+                                <DatePicker SelectedDate="1999-07-23"
                                             FontSize="16"
                                             Padding="10"/>
                             </StackPanel>
@@ -173,7 +173,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <TextBox Text="85"
+                                <TextBox Text="75"
                                          FontSize="16"
                                          Padding="10"
                                          BorderBrush="#BDC3C7"
@@ -187,7 +187,7 @@
                                            FontSize="14"
                                            Foreground="#7F8C8D"
                                            Margin="0,0,0,5"/>
-                                <TextBox Text="182"
+                                <TextBox Text="170"
                                          FontSize="16"
                                          Padding="10"
                                          BorderBrush="#BDC3C7"
