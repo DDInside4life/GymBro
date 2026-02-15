@@ -3,6 +3,7 @@ using GymBro.DAL.Data;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using BCrypt.Net;
 
 namespace GymBro.Business.Infrastructure
 {
@@ -106,7 +107,7 @@ namespace GymBro.Business.Infrastructure
             context.Exercises.AddRange(exercises);
             context.SaveChanges();
 
-            // Добавляем пользователей
+            // Добавляем пользователей (профили)
             var users = new[]
             {
                 new UserProfile
