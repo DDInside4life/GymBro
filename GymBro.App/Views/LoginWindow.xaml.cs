@@ -26,6 +26,4 @@ namespace GymBro.App.Views
             DataContext = vm;
         }
     }
-
-
 }

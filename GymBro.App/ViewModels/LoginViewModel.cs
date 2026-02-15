@@ -13,6 +13,8 @@ namespace GymBro.App.ViewModels
         private string _password;
         private string _errorMessage;
 
+
+
         public LoginViewModel(UserManager userManager)
         {
             _userManager = userManager;
@@ -48,15 +50,22 @@ namespace GymBro.App.ViewModels
 
         private void ExecuteLogin(object param)
         {
-            var user = _userManager.ValidateUser(Login, Password);
-            if (user != null)
+            try
             {
-                SessionManager.Login(user);
-                CloseRequested?.Invoke(this, true);
+                var user = _userManager.ValidateUser(Login, Password);
+                if (user != null)
+                {
+                    SessionManager.Login(user);
+                    CloseRequested?.Invoke(this, true);
+                }
+                else
+                {
+                    ErrorMessage = "Неверный логин или пароль";
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ErrorMessage = "Неверный логин или пароль";
+                ErrorMessage = "Ошибка: " + ex.Message;
             }
         }
 
