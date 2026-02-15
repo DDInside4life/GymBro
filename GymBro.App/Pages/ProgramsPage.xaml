@@ -62,13 +62,22 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
 
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                                <Button Content="➕ Добавить" Command="{Binding AddUserCommand}" 
-            Style="{StaticResource PrimaryButtonStyle}" Padding="15,8"/>
-                                <Button Content="✏️ Редактировать" Command="{Binding EditUserCommand}" 
-            Style="{StaticResource SecondaryButtonStyle}" Padding="15,8" Margin="10,0,0,0"/>
-                                <Button Content="➖ Удалить" Command="{Binding DeleteUserCommand}" 
-            Style="{StaticResource SecondaryButtonStyle}" Padding="15,8" Margin="10,0,0,0"/>
+                            <StackPanel Grid.Row="2" 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Right" 
+                                        Margin="0,15,0,0">
+                                <Button Content="➕ Добавить" 
+                                        Command="{Binding AddUserCommand}" 
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Padding="15,8"/>
+                                <Button Content="✏️ Редактировать" 
+                                        Command="{Binding EditUserCommand}" 
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Padding="15,8" Margin="10,0,0,0"/>
+                                <Button Content="➖ Удалить" 
+                                        Command="{Binding DeleteUserCommand}" 
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Padding="15,8" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -128,13 +137,22 @@
                                 </ListBox.ItemTemplate>
                             </ListBox>
 
-                            <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,15,0,0">
-                                <Button Content="➕ Добавить программу" Command="{Binding AddProgramCommand}" 
-            Style="{StaticResource PrimaryButtonStyle}" Padding="15,8"/>
-                                <Button Content="✏️ Редактировать" Command="{Binding EditProgramCommand}" 
-            Style="{StaticResource SecondaryButtonStyle}" Padding="15,8" Margin="10,0,0,0"/>
-                                <Button Content="➖ Удалить" Command="{Binding DeleteProgramCommand}" 
-            Style="{StaticResource SecondaryButtonStyle}" Padding="15,8" Margin="10,0,0,0"/>
+                            <StackPanel Grid.Row="2" 
+                                        Orientation="Horizontal" 
+                                        HorizontalAlignment="Right" 
+                                        Margin="0,15,0,0">
+                                <Button Content="➕ Добавить программу" 
+                                        Command="{Binding AddProgramCommand}" 
+                                        Style="{StaticResource PrimaryButtonStyle}"
+                                        Padding="15,8"/>
+                                <Button Content="✏️ Редактировать" 
+                                        Command="{Binding EditProgramCommand}" 
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Padding="15,8" Margin="10,0,0,0"/>
+                                <Button Content="➖ Удалить" 
+                                        Command="{Binding DeleteProgramCommand}" 
+                                        Style="{StaticResource SecondaryButtonStyle}"
+                                        Padding="15,8" Margin="10,0,0,0"/>
                             </StackPanel>
                         </Grid>
                     </Border>

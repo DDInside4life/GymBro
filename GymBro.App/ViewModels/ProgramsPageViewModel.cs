@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using GymBro.App.Views; // <-- добавили using для окон
 
 namespace GymBro.App.ViewModels
 {
@@ -31,10 +32,8 @@ namespace GymBro.App.ViewModels
             Users = new ObservableCollection<UserProfile>();
             Programs = new ObservableCollection<TrainingProgram>();
 
-            // Загружаем пользователей
             LoadUsers();
 
-            // Команды
             AddUserCommand = new RelayCommand(ExecuteAddUser);
             EditUserCommand = new RelayCommand(ExecuteEditUser, CanEditUser);
             DeleteUserCommand = new RelayCommand(ExecuteDeleteUser, CanDeleteUser);
@@ -141,7 +140,7 @@ namespace GymBro.App.ViewModels
         // ---------- Команды для пользователей ----------
         private void ExecuteAddUser(object param)
         {
-            var newUser = Views.EditUserProfileWindow.ShowDialog(owner: Application.Current.MainWindow);
+            var newUser = EditUserProfileWindow.ShowDialog(owner: Application.Current.MainWindow);
             if (newUser != null)
             {
                 _userManager.CreateUserProfile(newUser);
@@ -154,14 +153,12 @@ namespace GymBro.App.ViewModels
 
         private void ExecuteEditUser(object param)
         {
-            var updatedUser = Views.EditUserProfileWindow.ShowDialog(SelectedUser, Application.Current.MainWindow);
+            var updatedUser = EditUserProfileWindow.ShowDialog(SelectedUser, Application.Current.MainWindow);
             if (updatedUser != null)
             {
-                // Сохраняем Id исходного пользователя
                 updatedUser.Id = SelectedUser.Id;
                 _userManager.UpdateUserProfile(updatedUser);
 
-                // Обновляем в коллекции
                 var index = Users.IndexOf(SelectedUser);
                 Users[index] = updatedUser;
                 SelectedUser = updatedUser;
@@ -193,7 +190,7 @@ namespace GymBro.App.ViewModels
 
         private void ExecuteAddProgram(object param)
         {
-            var newProgram = Views.EditTrainingProgramWindow.ShowDialog(owner: Application.Current.MainWindow);
+            var newProgram = EditTrainingProgramWindow.ShowDialog(owner: Application.Current.MainWindow);
             if (newProgram != null)
             {
                 newProgram.UserProfileId = SelectedUser.Id;
@@ -207,7 +204,7 @@ namespace GymBro.App.ViewModels
 
         private void ExecuteEditProgram(object param)
         {
-            var updatedProgram = Views.EditTrainingProgramWindow.ShowDialog(SelectedProgram, Application.Current.MainWindow);
+            var updatedProgram = EditTrainingProgramWindow.ShowDialog(SelectedProgram, Application.Current.MainWindow);
             if (updatedProgram != null)
             {
                 updatedProgram.Id = SelectedProgram.Id;

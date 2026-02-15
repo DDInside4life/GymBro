@@ -3,6 +3,7 @@ using GymBro.Domain.Entities;
 using System;
 using System.Windows;
 using System.Windows.Input;
+using GymBro.App.Views;
 
 namespace GymBro.App.Views
 {
