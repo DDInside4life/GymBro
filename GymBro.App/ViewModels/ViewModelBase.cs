@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 
 namespace GymBro.App.ViewModels
-{
+{ 
     /// <summary>
     /// Базовый класс для всех ViewModel
     /// Реализует INotifyPropertyChanged для уведомления об изменениях свойств
