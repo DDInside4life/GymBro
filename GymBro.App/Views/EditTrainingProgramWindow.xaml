@@ -1,12 +1,47 @@
 ﻿<Window x:Class="GymBro.App.Views.EditTrainingProgramWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GymBro.App.Views"
-        mc:Ignorable="d"
-        Title="EditTrainingProgramWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="Редактирование программы" Height="450" Width="400"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize">
+    <Grid Margin="15">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Название программы" Margin="0,5,0,2"/>
+        <TextBox Grid.Row="1" x:Name="NameTextBox" Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}" Padding="5"/>
+
+        <TextBlock Grid.Row="2" Text="Описание" Margin="0,10,0,2"/>
+        <TextBox Grid.Row="3" x:Name="DescriptionTextBox" Text="{Binding Description, UpdateSourceTrigger=PropertyChanged}" Padding="5" Height="60" TextWrapping="Wrap" AcceptsReturn="True"/>
+
+        <TextBlock Grid.Row="4" Text="Тип программы" Margin="0,10,0,2"/>
+        <ComboBox Grid.Row="5" x:Name="ProgramTypeComboBox" SelectedItem="{Binding ProgramType}" Padding="5">
+            <ComboBoxItem Content="Силовая"/>
+            <ComboBoxItem Content="Кардио"/>
+            <ComboBoxItem Content="Фулбоди"/>
+            <ComboBoxItem Content="Сплит"/>
+        </ComboBox>
+
+        <TextBlock Grid.Row="6" Text="Длительность (недель)" Margin="0,10,0,2"/>
+        <TextBox Grid.Row="7" x:Name="DurationTextBox" Text="{Binding DurationWeeks, UpdateSourceTrigger=PropertyChanged}" Padding="5"/>
+
+        <TextBlock Grid.Row="8" Text="Сложность (1-5)" Margin="0,10,0,2"/>
+        <TextBox Grid.Row="9" x:Name="DifficultyTextBox" Text="{Binding Difficulty, UpdateSourceTrigger=PropertyChanged}" Padding="5"/>
+
+        <StackPanel Grid.Row="10" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="OK" x:Name="OkButton" Click="OkButton_Click" Width="80" Margin="5" IsDefault="True"/>
+            <Button Content="Отмена" x:Name="CancelButton" Click="CancelButton_Click" Width="80" Margin="5" IsCancel="True"/>
+        </StackPanel>
     </Grid>
 </Window>

@@ -1,6 +1,7 @@
 ﻿using GymBro.App.Commands;
 using GymBro.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Windows.Input;
 
 namespace GymBro.App.ViewModels
@@ -14,6 +15,8 @@ namespace GymBro.App.ViewModels
         private DateTime _birthDate = DateTime.Today;
         private string _fitnessLevel;
         private string _trainingGoal;
+        private readonly List<string> _fitnessLevels = new() { "Начинающий", "Средний", "Продвинутый" };
+        private readonly List<string> _trainingGoals = new() { "Похудение", "Набор массы", "Поддержание" };
 
         public EditUserProfileViewModel(UserProfile user = null)
         {
@@ -46,11 +49,15 @@ namespace GymBro.App.ViewModels
         public DateTime BirthDate { get => _birthDate; set => SetProperty(ref _birthDate, value); }
         public string FitnessLevel { get => _fitnessLevel; set => SetProperty(ref _fitnessLevel, value); }
         public string TrainingGoal { get => _trainingGoal; set => SetProperty(ref _trainingGoal, value); }
+        public List<string> FitnessLevels => _fitnessLevels;
+        public List<string> TrainingGoals => _trainingGoals;
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
 
-        private bool CanOk(object param) => !string.IsNullOrWhiteSpace(Name) && Age > 0 && Weight > 0 && Height > 0;
+        private bool CanOk(object param) =>
+            !string.IsNullOrWhiteSpace(Name) && Age > 0 && Weight > 0 && Height > 0;
+
         private void ExecuteOk(object param) => CloseRequested?.Invoke(this, true);
         private void ExecuteCancel(object param) => CloseRequested?.Invoke(this, false);
 

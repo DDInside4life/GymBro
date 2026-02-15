@@ -17,6 +17,10 @@ namespace GymBro.App
         {
             base.OnStartup(e);
 
+            // Не даём приложению завершиться при закрытии окна логина,
+            // иначе главное окно может не успеть открыться.
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
+
             // Инициализация базы данных
             try
             {
@@ -34,6 +38,8 @@ namespace GymBro.App
                 try
                 {
                     var mainWindow = new MainWindow();
+                    MainWindow = mainWindow;
+                    ShutdownMode = ShutdownMode.OnMainWindowClose;
                     mainWindow.Show();
                 }
                 catch (Exception ex)
