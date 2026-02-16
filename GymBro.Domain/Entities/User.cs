@@ -1,15 +1,25 @@
-﻿namespace GymBro.Domain.Entities
+﻿using System.Collections.Generic;
+
+namespace GymBro.Domain.Entities
 {
     public class User
     {
         public int Id { get; set; }
         public string Login { get; set; }
-        public string PasswordHash { get; set; } // Хеш пароля
-        public string Email { get; set; }        // Добавим для регистрации
-        public string FullName { get; set; }     // Полное имя (можно использовать вместо UserProfile, но у нас уже есть UserProfile)
+        public string PasswordHash { get; set; }
+        public string Email { get; set; }
+        public string FullName { get; set; }
+        public string Language { get; set; } = "ru"; // язык по умолчанию
 
-        // Связь с профилем (один к одному, опционально)
         public int? UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
+
+        // Роли пользователя
+        public ICollection<Role> Roles { get; set; }
+
+        public User()
+        {
+            Roles = new List<Role>();
+        }
     }
 }

@@ -1,25 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using GymBro.App.ViewModels;
+using GymBro.Domain.Entities;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace GymBro.App.Views
 {
-    /// <summary>
-    /// Interaction logic for ProgramSelectionWindow.xaml
-    /// </summary>
     public partial class ProgramSelectionWindow : Window
     {
         public ProgramSelectionWindow()
         {
             InitializeComponent();
+            var vm = new ProgramSelectionViewModel();
+            vm.CloseRequested += (s, template) => { SelectedTemplate = template; DialogResult = template != null; Close(); };
+            DataContext = vm;
+        }
+
+        public TrainingProgram SelectedTemplate { get; private set; }
+
+        public static TrainingProgram ShowDialog(Window owner = null)
+        {
+            var window = new ProgramSelectionWindow();
+            window.Owner = owner;
+            return ((Window)window).ShowDialog() == true ? window.SelectedTemplate : null;
         }
     }
 }

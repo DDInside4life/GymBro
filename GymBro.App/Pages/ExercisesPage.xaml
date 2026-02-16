@@ -12,6 +12,12 @@
             <StackPanel Margin="30">
                 <TextBlock Text="Библиотека упражнений" Style="{StaticResource Heading1Style}"/>
 
+                <!-- Индикатор загрузки -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Загрузка..." HorizontalAlignment="Center" FontSize="16"/>
+                </Border>
+
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -36,7 +42,13 @@
                                      SelectedItem="{Binding SelectedExercise}"
                                      Style="{StaticResource CardListBoxStyle}"
                                      ItemContainerStyle="{StaticResource CardListItemStyle}"
-                                     Height="300"/>
+                                     Height="300">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontSize="16"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
                         </Grid>
                     </Border>
 
@@ -60,12 +72,30 @@
                                     Background="#F8F9FA" 
                                     CornerRadius="10" 
                                     Padding="20">
-                                <TextBlock Text="{Binding SelectedExercise, FallbackValue='Выберите упражнение из списка'}" 
-                                           FontSize="16" 
-                                           Foreground="#2C3E50" 
-                                           TextWrapping="Wrap"
-                                           HorizontalAlignment="Center"
-                                           VerticalAlignment="Center"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding SelectedExercise.Name, FallbackValue='Выберите упражнение'}" 
+                                               FontSize="16" FontWeight="SemiBold" Margin="0,0,0,10"/>
+                                    <TextBlock Text="{Binding SelectedExercise.Description}" 
+                                               TextWrapping="Wrap" Margin="0,0,0,10"/>
+                                    <TextBlock>
+                                        <Run Text="Подходы:" FontWeight="SemiBold"/>
+                                        <Run Text="{Binding SelectedExercise.DefaultSets, StringFormat=' {0}'}"/>
+                                        <Run Text="x"/>
+                                        <Run Text="{Binding SelectedExercise.DefaultRepsMin}"/>
+                                        <Run Text="-"/>
+                                        <Run Text="{Binding SelectedExercise.DefaultRepsMax}"/>
+                                    </TextBlock>
+                                    <TextBlock>
+                                        <Run Text="Оборудование:" FontWeight="SemiBold"/>
+                                        <Run>
+                                            <Run.Text>
+                                                <MultiBinding StringFormat=" {0}">
+                                                    <Binding Path="SelectedExercise.Equipment" Converter="{StaticResource EquipmentToStringConverter}"/>
+                                                </MultiBinding>
+                                            </Run.Text>
+                                        </Run>
+                                    </TextBlock>
+                                </StackPanel>
                             </Border>
                             <Button Grid.Row="2" 
                                     Content="Просмотреть полное описание" 

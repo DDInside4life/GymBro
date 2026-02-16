@@ -15,10 +15,11 @@ namespace GymBro.DAL.Repositories
         private readonly GymBroContext _context;
         private IRepository<Domain.Entities.UserProfile> _userProfilesRepository;
         private IRepository<Domain.Entities.TrainingProgram> _trainingProgramsRepository;
-        private IRepository<Domain.Entities.Exercise> _exercise;
+        private IRepository<Exercise> _exerciseRepository;
         private IRepository<User> _usersRepository;
+        private IRepository<Role> _rolesRepository;
         public IRepository<User> UsersRepository => _usersRepository ??= new UserRepository(_context);
-
+        public IRepository<Role> RolesRepository => _rolesRepository ??= new RoleRepository(_context);
         public EFUnitOfWork(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))
@@ -51,7 +52,7 @@ namespace GymBro.DAL.Repositories
             }
         }
 
-     
+        public IRepository<Exercise> ExerciseRepository => _exerciseRepository ??= new ExerciseRepository(_context);
 
         public void SaveChanges()
         {

@@ -55,6 +55,12 @@ namespace GymBro.App.ViewModels
                 var user = _userManager.ValidateUser(Login, Password);
                 if (user != null)
                 {
+                    // Устанавливаем язык пользователя
+                    if (!string.IsNullOrEmpty(user.Language))
+                    {
+                        System.Threading.Thread.CurrentThread.CurrentUICulture =
+                            new System.Globalization.CultureInfo(user.Language);
+                    }
                     SessionManager.Login(user);
                     CloseRequested?.Invoke(this, true);
                 }

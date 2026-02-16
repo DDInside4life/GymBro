@@ -92,8 +92,10 @@ namespace GymBro.App.Views
 
         public static TrainingProgram ShowDialog(TrainingProgram program = null, Window owner = null)
         {
-            var window = new EditTrainingProgramWindow();
-            window.Owner = owner;
+            var window = new EditTrainingProgramWindow
+            {
+                Owner = owner
+            };
 
             if (program != null)
             {
@@ -112,7 +114,7 @@ namespace GymBro.App.Views
                 window.ProgramType = "Силовая";
             }
 
-            if (window.ShowDialog() == true)
+            if (((Window)window).ShowDialog() == true)
             {
                 return new TrainingProgram
                 {

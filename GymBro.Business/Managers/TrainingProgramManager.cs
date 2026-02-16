@@ -91,6 +91,16 @@ namespace GymBro.Business.Managers
             return result;
         }
 
+        public async Task<IEnumerable<TrainingProgram>> GetAllTrainingProgramsAsync()
+        {
+            return await _trainingProgramRepository.FindAsync(p => true);
+        }
+
+        public async Task<IEnumerable<TrainingProgram>> GetAllTemplatesAsync()
+        {
+            return await _trainingProgramRepository.FindAsync(p => p.IsTemplate);
+        }
+
         /// <summary>
         /// Создать программу на основе профиля пользователя
         /// </summary>

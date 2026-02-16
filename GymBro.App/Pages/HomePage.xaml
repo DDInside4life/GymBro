@@ -13,17 +13,15 @@
                                FontSize="28"
                                FontWeight="SemiBold"
                                Foreground="#2C3E50"/>
-                    <TextBlock Text="Понедельник, 15 января 2024"
+                    <TextBlock Text="{Binding CurrentDate}"
                                FontSize="16"
                                Foreground="#7F8C8D"
                                Margin="0,5,0,0"/>
                 </StackPanel>
 
-                <!-- Быстрые действия -->
+                <!-- Быстрые действия - две карточки -->
                 <Grid Margin="0,0,0,40">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="*"/>
@@ -56,13 +54,13 @@
                         </StackPanel>
                     </Border>
 
-                    <!-- Карточка 2: Моя программа -->
+                    <!-- Карточка 2: Программы тренировок -->
                     <Border Grid.Column="2" 
                             Background="White"
                             CornerRadius="15"
                             Padding="25">
                         <StackPanel>
-                            <TextBlock Text="Программы тренировок"
+                            <TextBlock Text="Каталог программ"
                                        FontSize="18"
                                        FontWeight="SemiBold"
                                        Foreground="#2C3E50"
@@ -82,42 +80,16 @@
                                     Click="ViewProgramButton_Click"/>
                         </StackPanel>
                     </Border>
-
-                    <!-- Карточка 3: Прогресс -->
-                    <Border Grid.Column="4" 
-                            Background="White"
-                            CornerRadius="15"
-                            Padding="25">
-                        <StackPanel>
-                            <TextBlock Text="Изменить программу"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"
-                                       Foreground="#2C3E50"
-                                       Margin="0,15,0,10"/>
-                            <TextBlock Text="Прирост мышечной массы: +2.5 кг за 4 недели"
-                                       FontSize="14"
-                                       Foreground="#7F8C8D"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Редактировать"
-                                    Background="#E74C3C"
-                                    Foreground="White"
-                                    FontSize="14"
-                                    FontWeight="SemiBold"
-                                    Padding="20,10"
-                                    Margin="0,20,0,0"
-                                    BorderThickness="0"
-                                    Click="ViewProgressButton_Click"/>
-                        </StackPanel>
-                    </Border>
                 </Grid>
 
+                <!-- Остальное содержимое (предстоящие тренировки, советы) оставляем как есть -->
                 <!-- Предстоящие тренировки -->
                 <Border Background="White"
                         CornerRadius="15"
                         Padding="25"
                         Margin="0,0,0,30">
                     <StackPanel>
-                        <TextBlock Text="📅 Предстоящие тренировки на неделю"
+                        <TextBlock Text="📅 Предстоящая тренировка"
                                    FontSize="20"
                                    FontWeight="SemiBold"
                                    Foreground="#2C3E50"

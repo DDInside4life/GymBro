@@ -104,8 +104,10 @@ namespace GymBro.App.Views
         /// <returns>Новый или обновлённый профиль, или null, если пользователь отменил действие.</returns>
         public static UserProfile ShowDialog(UserProfile profile = null, Window owner = null)
         {
-            var window = new EditUserProfileWindow();
-            window.Owner = owner;
+            var window = new EditUserProfileWindow
+            {
+                Owner = owner
+            };
 
             if (profile != null)
             {
@@ -129,7 +131,7 @@ namespace GymBro.App.Views
                 window.TrainingGoal = "Поддержание";
             }
 
-            if (window.ShowDialog() == true)
+            if (((Window)window).ShowDialog() == true)
             {
                 return new UserProfile
                 {

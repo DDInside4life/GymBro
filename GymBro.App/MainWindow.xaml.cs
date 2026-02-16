@@ -48,7 +48,7 @@ namespace GymBro.App
                     {
                         var programWindow = new ProgramSelectionWindow(); // откроется окно выбора программы
                         programWindow.Owner = this;
-                        programWindow.ShowDialog();
+                        //programWindow.ShowDialog();
                     };
 
                     homePage.ViewProgressClicked += (s, e) =>
@@ -92,6 +92,11 @@ namespace GymBro.App
 
 
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

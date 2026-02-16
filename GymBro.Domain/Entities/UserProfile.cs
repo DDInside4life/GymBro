@@ -32,7 +32,7 @@ namespace GymBro.Domain.Entities
 
         public UserProfile()
         {
-            TrainingPrograms = new List<TrainingProgram>();
+            TrainingPrograms = [];
         }
     }
 }

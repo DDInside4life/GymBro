@@ -11,8 +11,19 @@
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Margin="30">
                 <!-- Заголовок -->
-                <TextBlock Text="Сегодняшняя тренировка" 
-                           Style="{StaticResource Heading1Style}"/>
+                <TextBlock Text="Сегодняшняя тренировка" Style="{StaticResource Heading1Style}"/>
+
+                <!-- Индикатор загрузки -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Загрузка..." HorizontalAlignment="Center" FontSize="16"/>
+                </Border>
+
+                <!-- Название программы -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20">
+                    <TextBlock Text="{Binding WorkoutName, FallbackValue='Нет активной программы'}" 
+                               FontSize="18" FontWeight="SemiBold" Foreground="#2C3E50"/>
+                </Border>
 
                 <!-- Прогресс (пример) -->
                 <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20">
@@ -26,14 +37,14 @@
                                        FontSize="16" 
                                        Foreground="#7F8C8D"
                                        Margin="0,0,0,5"/>
-                            <ProgressBar Value="40" 
+                            <ProgressBar Value="0" 
                                          Height="10" 
                                          Width="300" 
                                          Foreground="#2ECC71"
                                          Background="#ECF0F1"/>
                         </StackPanel>
                         <TextBlock Grid.Column="1" 
-                                   Text="2/5 упражнений" 
+                                   Text="0/5 упражнений" 
                                    FontSize="18" 
                                    FontWeight="SemiBold" 
                                    Foreground="#2C3E50"
@@ -58,7 +69,22 @@
                                  SelectedItem="{Binding SelectedExercise}"
                                  Style="{StaticResource CardListBoxStyle}"
                                  ItemContainerStyle="{StaticResource CardListItemStyle}"
-                                 Height="200"/>
+                                 Height="200">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="Auto"/>
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Text="{Binding Name}" FontSize="16" VerticalAlignment="Center"/>
+                                        <TextBlock Grid.Column="1" 
+                                                   Text="{Binding DefaultSets, StringFormat='{}{0} x {1}-{2} повторений'}" 
+                                                   FontSize="14" Foreground="#7F8C8D"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
                     </Grid>
                 </Border>
 
@@ -68,7 +94,7 @@
                             Command="{Binding StartWorkoutCommand}" 
                             Style="{StaticResource PrimaryButtonStyle}"
                             Width="200"/>
-                    <Button Content="⏸ Пропустить" 
+                    <Button Content="⏸ Завершить подход" 
                             Command="{Binding CompleteSetCommand}" 
                             Style="{StaticResource SecondaryButtonStyle}"
                             Width="150"

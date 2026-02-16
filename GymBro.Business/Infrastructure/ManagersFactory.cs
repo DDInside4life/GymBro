@@ -17,6 +17,13 @@ namespace GymBro.Business.Infrastructure
         private UserProfileManager _userProfileManager;
         private TrainingProgramManager _trainingProgramManager;
         private UserManager _userManager;
+        private ExerciseManager _exerciseManager;
+
+        public ExerciseManager GetExerciseManager()
+        {
+            return _exerciseManager ??= new ExerciseManager(_unitOfWork);
+        }
+
         public UserManager GetUserManager()
         {
             return _userManager ??= new UserManager(_unitOfWork);

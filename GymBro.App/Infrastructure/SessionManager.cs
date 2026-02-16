@@ -17,5 +17,11 @@ namespace GymBro.App.Infrastructure
         }
 
         public static bool IsAuthenticated => CurrentUser != null;
+
+        public static bool IsInRole(string roleName)
+        {
+            return CurrentUser?.Roles?.Any(r => r.Name == roleName) ?? false;
+        }
     }
+
 }

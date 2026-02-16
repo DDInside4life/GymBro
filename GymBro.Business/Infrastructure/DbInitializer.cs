@@ -122,7 +122,7 @@ namespace GymBro.Business.Infrastructure
                 },
                 new UserProfile
                 {
-                    Name = "Анна Смирнова",
+                    Name = "Сидни Суини",
                     Age = 28,
                     Weight = 60,
                     Height = 165,
@@ -132,7 +132,7 @@ namespace GymBro.Business.Infrastructure
                 },
                 new UserProfile
                 {
-                    Name = "Дмитрий Петров",
+                    Name = "Конор Макгрегор",
                     Age = 32,
                     Weight = 75,
                     Height = 175,
@@ -197,6 +197,68 @@ namespace GymBro.Business.Infrastructure
                     FullName = "Administrator"
                 };
                 context.Users.Add(testUser);
+                context.SaveChanges();
+            }
+
+            // Добавляем роли
+            if (!context.Roles.Any())
+            {
+                context.Roles.AddRange(
+                    new Role { Name = "Admin" },
+                    new Role { Name = "User" }
+                );
+                context.SaveChanges();
+            }
+
+            // Назначаем роль Admin пользователю admin
+            var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
+            var adminUser = context.Users.FirstOrDefault(u => u.Login == "admin");
+            if (adminUser != null && adminRole != null)
+            {
+                adminUser.Roles = new List<Role> { adminRole };
+                context.SaveChanges();
+            }
+
+            // Добавляем шаблонные программы
+            if (!context.TrainingPrograms.Any(p => p.IsTemplate))
+            {
+                var templates = new[]
+                {
+        new TrainingProgram
+        {
+            Name = "Силовая программа для начинающих",
+            Description = "Базовая силовая программа",
+            ProgramType = "Силовая",
+            DurationWeeks = 8,
+            Difficulty = 2,
+            WorkoutsPerWeek = 3,
+            CreatedDate = DateTime.Now,
+            IsTemplate = true
+        },
+        new TrainingProgram
+        {
+            Name = "Кардио для похудения",
+            Description = "Интенсивное кардио",
+            ProgramType = "Кардио",
+            DurationWeeks = 6,
+            Difficulty = 3,
+            WorkoutsPerWeek = 4,
+            CreatedDate = DateTime.Now,
+            IsTemplate = true
+        },
+        new TrainingProgram
+        {
+            Name = "Фулбоди для всех",
+            Description = "Круговая тренировка",
+            ProgramType = "Фулбоди",
+            DurationWeeks = 4,
+            Difficulty = 1,
+            WorkoutsPerWeek = 2,
+            CreatedDate = DateTime.Now,
+            IsTemplate = true
+        }
+    };
+                context.TrainingPrograms.AddRange(templates);
                 context.SaveChanges();
             }
         }

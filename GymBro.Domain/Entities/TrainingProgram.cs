@@ -19,6 +19,7 @@ namespace GymBro.Domain.Entities
         //public bool IsActive { get; set; }
 
         public int WorkoutsPerWeek { get; set; }
+        public bool IsTemplate { get; set; }
 
 
         //  Внешний ключ для связи с UserProfile
@@ -26,7 +27,7 @@ namespace GymBro.Domain.Entities
 
         // Навигационные свойства
         public UserProfile UserProfile { get; set; }
-        //public ICollection<Exercise> Exercises { get; set; }
+        public ICollection<Exercise> Exercises { get; set; }
         //public ICollection<ProgramDay> ProgramDays { get; set; } // Расписание по дням
     }
 }

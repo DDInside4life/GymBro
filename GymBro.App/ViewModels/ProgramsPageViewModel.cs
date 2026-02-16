@@ -1,4 +1,5 @@
 ﻿using GymBro.App.Commands;
+using GymBro.App.Infrastructure;
 using GymBro.Business.Infrastructure;
 using GymBro.Business.Managers;
 using GymBro.Domain.Entities;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using GymBro.App.Views; // <-- добавили using для окон
 
 namespace GymBro.App.ViewModels
 {
@@ -16,6 +16,8 @@ namespace GymBro.App.ViewModels
     {
         private readonly UserProfileManager _userManager;
         private readonly TrainingProgramManager _programManager;
+        private readonly bool _isAdmin;
+        private readonly int? _currentUserId;
 
         private ObservableCollection<UserProfile> _users;
         private UserProfile _selectedUser;
@@ -29,26 +31,25 @@ namespace GymBro.App.ViewModels
             _userManager = factory.GetUserProfileManager();
             _programManager = factory.GetTrainingProgramManager();
 
+            _isAdmin = SessionManager.IsInRole("Admin");
+            _currentUserId = SessionManager.CurrentUser?.UserProfileId; // предполагаем, что у User есть UserProfileId
+
             Users = new ObservableCollection<UserProfile>();
             Programs = new ObservableCollection<TrainingProgram>();
 
-            LoadUsers();
+            LoadInitialData();
 
-            AddUserCommand = new RelayCommand(ExecuteAddUser);
-            EditUserCommand = new RelayCommand(ExecuteEditUser, CanEditUser);
-            DeleteUserCommand = new RelayCommand(ExecuteDeleteUser, CanDeleteUser);
+            AddUserCommand = new RelayCommand(ExecuteAddUser, _ => _isAdmin);
+            EditUserCommand = new RelayCommand(ExecuteEditUser, _ => _isAdmin && SelectedUser != null);
+            DeleteUserCommand = new RelayCommand(ExecuteDeleteUser, _ => _isAdmin && SelectedUser != null);
 
             AddProgramCommand = new RelayCommand(ExecuteAddProgram, CanAddProgram);
             EditProgramCommand = new RelayCommand(ExecuteEditProgram, CanEditProgram);
             DeleteProgramCommand = new RelayCommand(ExecuteDeleteProgram, CanDeleteProgram);
         }
 
-        public ObservableCollection<UserProfile> Users
-        {
-            get => _users;
-            set => SetProperty(ref _users, value);
-        }
-
+        // Свойства для привязки
+        public ObservableCollection<UserProfile> Users { get => _users; set => SetProperty(ref _users, value); }
         public UserProfile SelectedUser
         {
             get => _selectedUser;
@@ -60,52 +61,55 @@ namespace GymBro.App.ViewModels
                 }
             }
         }
-
-        public ObservableCollection<TrainingProgram> Programs
-        {
-            get => _programs;
-            set => SetProperty(ref _programs, value);
-        }
-
-        public TrainingProgram SelectedProgram
-        {
-            get => _selectedProgram;
-            set => SetProperty(ref _selectedProgram, value);
-        }
-
-        public bool IsLoading
-        {
-            get => _isLoading;
-            set => SetProperty(ref _isLoading, value);
-        }
+        public ObservableCollection<TrainingProgram> Programs { get => _programs; set => SetProperty(ref _programs, value); }
+        public TrainingProgram SelectedProgram { get => _selectedProgram; set => SetProperty(ref _selectedProgram, value); }
+        public bool IsLoading { get => _isLoading; set => SetProperty(ref _isLoading, value); }
+        public bool IsAdmin => _isAdmin;
 
         public ICommand AddUserCommand { get; }
         public ICommand EditUserCommand { get; }
         public ICommand DeleteUserCommand { get; }
-
         public ICommand AddProgramCommand { get; }
         public ICommand EditProgramCommand { get; }
         public ICommand DeleteProgramCommand { get; }
 
-        private void LoadUsers()
+        private void LoadInitialData()
+        {
+            if (_isAdmin)
+            {
+                LoadAllUsers();
+            }
+            else
+            {
+                // Для обычного пользователя показываем только его профиль
+                if (_currentUserId.HasValue)
+                {
+                    var user = _userManager.GetUserProfileById(_currentUserId.Value);
+                    if (user != null)
+                    {
+                        Users.Add(user);
+                        SelectedUser = user;
+                    }
+                }
+                else
+                {
+                    // Если у пользователя нет профиля? По идее должен быть.
+                }
+            }
+        }
+
+        private void LoadAllUsers()
         {
             try
             {
                 var users = _userManager.GetAllUserProfiles().ToList();
                 Users.Clear();
-                foreach (var user in users)
-                {
-                    Users.Add(user);
-                }
-
-                if (Users.Any())
-                {
-                    SelectedUser = Users.First();
-                }
+                foreach (var user in users) Users.Add(user);
+                if (Users.Any()) SelectedUser = Users.First();
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки пользователей: {ex.Message}", "Ошибка");
+                MessageBox.Show($"Ошибка загрузки пользователей: {ex.Message}");
             }
         }
 
@@ -122,14 +126,11 @@ namespace GymBro.App.ViewModels
                 IsLoading = true;
                 var programs = await _programManager.GetProgramsByUserAsync(SelectedUser.Id);
                 Programs.Clear();
-                foreach (var prog in programs)
-                {
-                    Programs.Add(prog);
-                }
+                foreach (var prog in programs) Programs.Add(prog);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка загрузки программ: {ex.Message}", "Ошибка");
+                MessageBox.Show($"Ошибка загрузки программ: {ex.Message}");
             }
             finally
             {
@@ -137,10 +138,10 @@ namespace GymBro.App.ViewModels
             }
         }
 
-        // ---------- Команды для пользователей ----------
+        // Команды для пользователей (только админ)
         private void ExecuteAddUser(object param)
         {
-            var newUser = EditUserProfileWindow.ShowDialog(owner: Application.Current.MainWindow);
+            var newUser = Views.EditUserProfileWindow.ShowDialog(owner: Application.Current.MainWindow);
             if (newUser != null)
             {
                 _userManager.CreateUserProfile(newUser);
@@ -149,28 +150,23 @@ namespace GymBro.App.ViewModels
             }
         }
 
-        private bool CanEditUser(object param) => SelectedUser != null;
-
         private void ExecuteEditUser(object param)
         {
-            var updatedUser = EditUserProfileWindow.ShowDialog(SelectedUser, Application.Current.MainWindow);
+            var updatedUser = Views.EditUserProfileWindow.ShowDialog(SelectedUser, Application.Current.MainWindow);
             if (updatedUser != null)
             {
                 updatedUser.Id = SelectedUser.Id;
                 _userManager.UpdateUserProfile(updatedUser);
-
                 var index = Users.IndexOf(SelectedUser);
                 Users[index] = updatedUser;
                 SelectedUser = updatedUser;
             }
         }
 
-        private bool CanDeleteUser(object param) => SelectedUser != null;
-
         private void ExecuteDeleteUser(object param)
         {
-            var result = MessageBox.Show($"Удалить пользователя '{SelectedUser.Name}'?",
-                "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            if (!_isAdmin) return;
+            var result = MessageBox.Show($"Удалить пользователя '{SelectedUser.Name}'?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
                 if (_userManager.DeleteUserProfile(SelectedUser.Id))
@@ -178,62 +174,98 @@ namespace GymBro.App.ViewModels
                     Users.Remove(SelectedUser);
                     SelectedUser = Users.FirstOrDefault();
                 }
-                else
+                else MessageBox.Show("Не удалось удалить пользователя.");
+            }
+        }
+
+        // Команды для программ
+        private bool CanAddProgram(object param)
+        {
+            if (_isAdmin) return SelectedUser != null;
+            else return true; // обычный пользователь может добавлять себе программу (текущий пользователь)
+        }
+
+        private void ExecuteAddProgram(object param)
+        {
+            if (_isAdmin)
+            {
+                // Для админа открываем обычное окно редактирования с пустой программой
+                var newProgram = Views.EditTrainingProgramWindow.ShowDialog(owner: Application.Current.MainWindow);
+                if (newProgram != null)
                 {
-                    MessageBox.Show("Не удалось удалить пользователя.", "Ошибка");
+                    newProgram.UserProfileId = SelectedUser.Id;
+                    _programManager.CreateTrainingProgram(newProgram);
+                    Programs.Add(newProgram);
+                    SelectedProgram = newProgram;
+                }
+            }
+            else
+            {
+                // Для обычного пользователя открываем окно выбора шаблона
+                var template = Views.ProgramSelectionWindow.ShowDialog(Application.Current.MainWindow);
+                if (template != null)
+                {
+                    // Создаём программу на основе шаблона
+                    var newProgram = new TrainingProgram
+                    {
+                        Name = template.Name,
+                        Description = template.Description,
+                        ProgramType = template.ProgramType,
+                        DurationWeeks = template.DurationWeeks,
+                        Difficulty = template.Difficulty,
+                        WorkoutsPerWeek = template.WorkoutsPerWeek,
+                        CreatedDate = DateTime.Now,
+                        UserProfileId = _currentUserId.Value,
+                        IsTemplate = false
+                    };
+                    _programManager.CreateTrainingProgram(newProgram);
+                    Programs.Add(newProgram);
+                    SelectedProgram = newProgram;
                 }
             }
         }
 
-        // ---------- Команды для программ ----------
-        private bool CanAddProgram(object param) => SelectedUser != null;
-
-        private void ExecuteAddProgram(object param)
+        private bool CanEditProgram(object param)
         {
-            var newProgram = EditTrainingProgramWindow.ShowDialog(owner: Application.Current.MainWindow);
-            if (newProgram != null)
-            {
-                newProgram.UserProfileId = SelectedUser.Id;
-                _programManager.CreateTrainingProgram(newProgram);
-                Programs.Add(newProgram);
-                SelectedProgram = newProgram;
-            }
+            if (_isAdmin) return SelectedProgram != null;
+            else return SelectedProgram != null && SelectedProgram.UserProfileId == _currentUserId;
         }
-
-        private bool CanEditProgram(object param) => SelectedProgram != null;
 
         private void ExecuteEditProgram(object param)
         {
-            var updatedProgram = EditTrainingProgramWindow.ShowDialog(SelectedProgram, Application.Current.MainWindow);
+            var updatedProgram = Views.EditTrainingProgramWindow.ShowDialog(SelectedProgram, Application.Current.MainWindow);
             if (updatedProgram != null)
             {
                 updatedProgram.Id = SelectedProgram.Id;
                 updatedProgram.UserProfileId = SelectedProgram.UserProfileId;
                 _programManager.UpdateTrainingProgram(updatedProgram);
-
                 var index = Programs.IndexOf(SelectedProgram);
                 Programs[index] = updatedProgram;
                 SelectedProgram = updatedProgram;
             }
         }
 
-        private bool CanDeleteProgram(object param) => SelectedProgram != null;
+        private bool CanDeleteProgram(object param)
+        {
+            if (_isAdmin) return SelectedProgram != null;
+            else return SelectedProgram != null && SelectedProgram.UserProfileId == _currentUserId;
+        }
 
         private void ExecuteDeleteProgram(object param)
         {
-            var result = MessageBox.Show($"Удалить программу '{SelectedProgram.Name}'?",
-                "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
+            var program = SelectedProgram;
+            if (program == null) return;
+            if (!_isAdmin && program.UserProfileId != _currentUserId) return;
+
+            var result = MessageBox.Show($"Удалить программу '{program.Name}'?", "Подтверждение", MessageBoxButton.YesNo, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                if (_programManager.DeleteTrainingProgram(SelectedProgram.Id))
+                if (_programManager.DeleteTrainingProgram(program.Id))
                 {
-                    Programs.Remove(SelectedProgram);
+                    Programs.Remove(program);
                     SelectedProgram = Programs.FirstOrDefault();
                 }
-                else
-                {
-                    MessageBox.Show("Не удалось удалить программу.", "Ошибка");
-                }
+                else MessageBox.Show("Не удалось удалить программу.");
             }
         }
     }

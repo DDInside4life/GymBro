@@ -35,8 +35,15 @@ namespace GymBro.Business.Managers
                 Login = login,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 Email = email,
-                FullName = fullName
+                FullName = fullName,
+                Language = "ru", // по умолчанию
+                Roles = new List<Role>()
             };
+
+            // Добавляем роль User
+            var userRole = _unitOfWork.RolesRepository.Find(r => r.Name == "User").FirstOrDefault();
+            if (userRole != null)
+                user.Roles.Add(userRole);
 
             _userRepository.Create(user);
             _unitOfWork.SaveChanges();
@@ -56,6 +63,17 @@ namespace GymBro.Business.Managers
             _userRepository.Update(user);
             _unitOfWork.SaveChanges();
             return true;
+        }
+
+        public void UpdateUserLanguage(int userId, string language)
+        {
+            var user = _userRepository.Get(userId);
+            if (user != null)
+            {
+                user.Language = language;
+                _userRepository.Update(user);
+                _unitOfWork.SaveChanges();
+            }
         }
     }
 }

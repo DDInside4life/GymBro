@@ -7,8 +7,8 @@
         xmlns:viewModels="clr-namespace:GymBro.App.ViewModels"
         mc:Ignorable="d"
         Title="GYM - Gain Your Muscle" 
-        Height="980" 
-        Width="1200"
+        Height="800" 
+        Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowState="Normal">
 
@@ -69,44 +69,19 @@
                 <!-- Основное меню навигации -->
                 <StackPanel Grid.Row="2" Margin="0,0,0,20">
                     <Button Content="🏠 Главная" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
+            Tag="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
                     <Button Content="📋 Тренировка" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Workout" Command="{Binding NavigateCommand}" CommandParameter="Workout"/>
-                    <Button Content="📊 Мои программы" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Programs" Command="{Binding NavigateCommand}" CommandParameter="Programs"/>
+            Tag="Workout" Command="{Binding NavigateCommand}" CommandParameter="Workout"/>
+                    <Button Content="📊 Программы" Style="{StaticResource NavigationButtonStyle}" 
+            Tag="Programs" Command="{Binding NavigateCommand}" CommandParameter="Programs"/>
                     <Button Content="💪 Упражнения" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Exercises" Command="{Binding NavigateCommand}" CommandParameter="Exercises"/>
-                    <Button Content="📈 Прогресс" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Progress" Command="{Binding NavigateCommand}" CommandParameter="Progress"/>
-                    <Button Content="⚙ Настройки" Style="{StaticResource NavigationButtonStyle}" 
-                            Tag="Settings" Command="{Binding NavigateCommand}" CommandParameter="Settings"/>
+            Tag="Exercises" Command="{Binding NavigateCommand}" CommandParameter="Exercises"/>
+                    <Button Content="🛠 Оборудование" Style="{StaticResource NavigationButtonStyle}" 
+            Tag="Equipment" Command="{Binding NavigateCommand}" CommandParameter="Equipment"/>
                 </StackPanel>
 
-                <!-- Статистика -->
-                <Border Grid.Row="3" Background="#34495E" CornerRadius="10" Margin="15,0,15,15" Padding="15">
-                    <StackPanel>
-                        <TextBlock Text="Недельная статистика" Foreground="#BDC3C7" FontSize="12" Margin="0,0,0,10"/>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0">
-                                <TextBlock Text="3" Foreground="#2ECC71" FontSize="24" FontWeight="Bold" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="Тренировок" Foreground="#BDC3C7" FontSize="11" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1">
-                                <TextBlock Text="85%" Foreground="#3498DB" FontSize="24" FontWeight="Bold" 
-                                           HorizontalAlignment="Center"/>
-                                <TextBlock Text="Выполнено" Foreground="#BDC3C7" FontSize="11" HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Grid>
-                    </StackPanel>
-                </Border>
-
                 <!-- Нижняя часть с информацией -->
-                <StackPanel Grid.Row="4" Margin="20,0,20,20">
+                <StackPanel Grid.Row="3" Margin="20,0,20,20">
                     <TextBlock Text="© 2026 GYM v1.0" Foreground="#7F8C8D" FontSize="10" HorizontalAlignment="Center"/>
                 </StackPanel>
             </Grid>

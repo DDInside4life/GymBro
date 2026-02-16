@@ -19,8 +19,10 @@ namespace GymBro.App.Infrastructure
         {
             if (d is PasswordBox passwordBox)
             {
+                // Подписываемся на событие изменения пароля, чтобы обновлять свойство
                 passwordBox.PasswordChanged -= PasswordChanged;
-                passwordBox.Password = (string)e.NewValue ?? "";
+                // Не устанавливаем пароль, чтобы не сбрасывать курсор
+                // passwordBox.Password = (string)e.NewValue ?? "";
                 passwordBox.PasswordChanged += PasswordChanged;
             }
         }

@@ -13,7 +13,7 @@ namespace GymBro.Domain.Entities
 
         public Equipment()
         {
-            Exercises = new List<Exercise>();
+            Exercises = [];
         }
     }
 }

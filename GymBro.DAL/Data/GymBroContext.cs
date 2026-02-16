@@ -31,6 +31,9 @@ namespace GymBro.DAL.Data
         // Таблица пользователей
         public DbSet<User> Users { get; set; }
 
+        // Таблица ролей
+        public DbSet<Role> Roles { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Настройка связи один-ко-многим
@@ -85,11 +88,12 @@ namespace GymBro.DAL.Data
                       .HasMaxLength(255);
             });
 
-            modelBuilder.Entity<Exercise>()
-                 .HasMany(e => e.Equipment)
-                 .WithMany(eq => eq.Exercises)
-                 .UsingEntity(j => j.ToTable("ExerciseEquipment"));
-            
+             modelBuilder.Entity<Exercise>()
+                    .HasOne(e => e.TrainingProgram)
+                    .WithMany(p => p.Exercises)
+                    .HasForeignKey(e => e.TrainingProgramId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasIndex(u => u.Login).IsUnique(); // Логин должен быть уникальным
@@ -104,6 +108,11 @@ namespace GymBro.DAL.Data
                       .HasForeignKey<User>(u => u.UserProfileId)
                       .OnDelete(DeleteBehavior.SetNull);
             });
+
+            modelBuilder.Entity<User>()
+                    .HasMany(u => u.Roles)
+                    .WithMany(r => r.Users)
+                    .UsingEntity(j => j.ToTable("UserRoles"));
         }
 
     }
