@@ -42,5 +42,10 @@ namespace GymBro.Business.Managers
             return await _exerciseRepository.FindAsync(e => e.TrainingProgramId == programId);
         }
 
+        public async Task<IEnumerable<Exercise>> GetExercisesByEquipmentIdAsync(int equipmentId)
+        {
+            return await _exerciseRepository.FindAsync(e => e.Equipment.Any(eq => eq.Id == equipmentId));
+        }
+
     }
 }

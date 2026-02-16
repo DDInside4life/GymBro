@@ -22,6 +22,8 @@ namespace GymBro.App.Infrastructure
         {
             return CurrentUser?.Roles?.Any(r => r.Name == roleName) ?? false;
         }
+
+        public static int? SelectedProgramId { get; set; }
     }
 
 }

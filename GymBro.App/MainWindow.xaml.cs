@@ -37,26 +37,12 @@ namespace GymBro.App
                     var homePage = new Pages.HomePage();
 
                     // Подписка на события HomePage
-                    homePage.StartWorkoutClicked += (s, e) =>
-                    {
-                        var workoutWindow = new WorkoutSessionWindow(); // откроется окно тренировки
-                        workoutWindow.Owner = this;
-                        workoutWindow.ShowDialog();
-                    };
-
                     homePage.ViewProgramClicked += (s, e) =>
                     {
                         var programWindow = new ProgramSelectionWindow(); // откроется окно выбора программы
                         programWindow.Owner = this;
-                        //programWindow.ShowDialog();
+                        ((Window)programWindow).ShowDialog();
                     };
-
-                    homePage.ViewProgressClicked += (s, e) =>
-                    {
-                        // Если нужно открыть страницу прогресса (например, уже есть ProgressPage)
-                        MainContentFrame.Navigate(new Pages.ProgressPage());
-                    };
-
                     MainContentFrame.Navigate(homePage);
                     break;
                 case "Workout":
@@ -68,29 +54,12 @@ namespace GymBro.App
                 case "Exercises":
                     MainContentFrame.Navigate(new Pages.ExercisesPage());
                     break;
-                case "Progress":
-                    MainContentFrame.Navigate(new Pages.ProgressPage());
+                case "Equipment":
+                    MainContentFrame.Navigate(new Pages.EquipmentPage());
                     break;
-                case "Settings":
-                    MainContentFrame.Navigate(new Pages.SettingsPage());
+                case "Users":
+                    MainContentFrame.Navigate(new Pages.UsersPage());
                     break;
-                case "Profile":
-                    var currentUser = new UserProfile
-                    {
-                        Name = "Кулеш Роман",
-                        Age = 25,
-                        Weight = 80,
-                        Height = 180,
-                        BirthDate = new DateTime(1998, 5, 15),
-                        FitnessLevel = "Продвинутый",
-                        TrainingGoal = "Набор массы"
-                    };
-                    var profileWindow = new UserProfileWindow(currentUser);
-                    profileWindow.Owner = this;
-                    profileWindow.ShowDialog();
-                    break;
-
-
             }
         }
 

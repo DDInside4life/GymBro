@@ -143,5 +143,24 @@ namespace GymBro.Business.Managers
 
             return program;
         }
+
+        public async Task<IEnumerable<TrainingProgram>> GetProgramsForCurrentUserAsync(int? userProfileId, bool isAdmin)
+        {
+            if (isAdmin)
+            {
+                // Админ видит все программы (включая шаблоны)
+                return await _trainingProgramRepository.FindAsync(p => true);
+            }
+            else
+            {
+                // Обычный пользователь видит свои программы и шаблонные
+                return await _trainingProgramRepository.FindAsync(p => p.UserProfileId == userProfileId || p.IsTemplate);
+            }
+        }
+
+        public async Task<TrainingProgram> GetTrainingProgramByIdAsync(int id)
+        {
+            return await Task.Run(() => _trainingProgramRepository.Get(id, "Exercises.Equipment"));
+        }
     }
 }

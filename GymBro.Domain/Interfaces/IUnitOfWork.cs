@@ -15,6 +15,7 @@ namespace GymBro.Domain.Interfaces
         IRepository<User> UsersRepository { get; }
         IRepository<Exercise> ExerciseRepository { get; }
         IRepository<Role> RolesRepository { get; }
+        IRepository<Equipment> EquipmentRepository { get; }
         void SaveChanges();
     }
 }

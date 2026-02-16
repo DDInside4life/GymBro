@@ -25,13 +25,13 @@ namespace GymBro.App.ViewModels
 
         public EditTrainingProgramViewModel(TrainingProgram program = null)
         {
-            var factory = new ManagersFactory();
-            _programManager = factory.GetTrainingProgramManager();
-            _exerciseManager = factory.GetExerciseManager();
+            //var factory = new ManagersFactory();
+            //_programManager = factory.GetTrainingProgramManager();
+            //_exerciseManager = factory.GetExerciseManager();
 
+            _originalProgram = program;
             if (program != null)
             {
-                _originalProgram = program;
                 _name = program.Name;
                 _description = program.Description;
                 _programType = program.ProgramType;
@@ -134,5 +134,6 @@ namespace GymBro.App.ViewModels
         }
 
         public event EventHandler<TrainingProgram> CloseRequested;
+        public List<string> ProgramTypes { get; } = new List<string> { "Силовая", "Кардио", "Фулбоди", "Сплит", "Набор массы", "Похудение" };
     }
 }

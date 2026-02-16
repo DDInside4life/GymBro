@@ -18,8 +18,10 @@ namespace GymBro.DAL.Repositories
         private IRepository<Exercise> _exerciseRepository;
         private IRepository<User> _usersRepository;
         private IRepository<Role> _rolesRepository;
+        private IRepository<Equipment> _equipmentRepository;
         public IRepository<User> UsersRepository => _usersRepository ??= new UserRepository(_context);
         public IRepository<Role> RolesRepository => _rolesRepository ??= new RoleRepository(_context);
+        public IRepository<Equipment> EquipmentRepository => _equipmentRepository ??= new EquipmentRepository(_context);
         public EFUnitOfWork(string connectionString)
         {
             if (string.IsNullOrEmpty(connectionString))

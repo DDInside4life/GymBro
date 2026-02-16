@@ -75,5 +75,10 @@ namespace GymBro.Business.Managers
                 _unitOfWork.SaveChanges();
             }
         }
+
+        public async Task<IEnumerable<User>> GetAllUsersAsync()
+        {
+            return await _userRepository.FindAsync(u => true);
+        }
     }
 }

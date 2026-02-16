@@ -1,7 +1,11 @@
 ﻿<Page x:Class="GymBro.App.Pages.HomePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:GymBro.App.ViewModels"
       Title="Домашняя страница">
+    <Page.DataContext>
+        <vm:HomePageViewModel />
+    </Page.DataContext>
 
     <Grid Background="#F5F7FA">
         <ScrollViewer VerticalScrollBarVisibility="Auto">
@@ -19,83 +23,29 @@
                                Margin="0,5,0,0"/>
                 </StackPanel>
 
-                <!-- Быстрые действия - две карточки -->
-                <Grid Margin="0,0,0,40">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                <!-- Индикатор загрузки -->
+                <Border Background="White" CornerRadius="15" Padding="20" Margin="0,0,0,20"
+                        Visibility="{Binding IsLoading, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Загрузка..." HorizontalAlignment="Center" FontSize="16"/>
+                </Border>
 
-                    <!-- Карточка 1: Начать тренировку -->
-                    <Border Grid.Column="0" 
-                            Background="White"
-                            CornerRadius="15"
-                            Padding="25">
-                        <StackPanel>
-                            <TextBlock Text="Начать тренировку"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"
-                                       Foreground="#2C3E50"
-                                       Margin="0,15,0,10"/>
-                            <TextBlock Text="Тренировка сегодня: Грудь и трицепс"
-                                       FontSize="14"
-                                       Foreground="#7F8C8D"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Начать"
-                                    Background="#3498DB"
-                                    Foreground="White"
-                                    FontSize="14"
-                                    FontWeight="SemiBold"
-                                    Padding="20,10"
-                                    Margin="0,20,0,0"
-                                    BorderThickness="0"
-                                    Click="StartWorkoutButton_Click"/>
-                        </StackPanel>
-                    </Border>
-
-                    <!-- Карточка 2: Программы тренировок -->
-                    <Border Grid.Column="2" 
-                            Background="White"
-                            CornerRadius="15"
-                            Padding="25">
-                        <StackPanel>
-                            <TextBlock Text="Каталог программ"
-                                       FontSize="18"
-                                       FontWeight="SemiBold"
-                                       Foreground="#2C3E50"
-                                       Margin="0,15,0,10"/>
-                            <TextBlock Text="Силовая программа (неделя 4 из 12)"
-                                       FontSize="14"
-                                       Foreground="#7F8C8D"
-                                       TextWrapping="Wrap"/>
-                            <Button Content="Просмотреть"
-                                    Background="#2ECC71"
-                                    Foreground="White"
-                                    FontSize="14"
-                                    FontWeight="SemiBold"
-                                    Padding="20,10"
-                                    Margin="0,20,0,0"
-                                    BorderThickness="0"
-                                    Click="ViewProgramButton_Click"/>
-                        </StackPanel>
-                    </Border>
-                </Grid>
-
-                <!-- Остальное содержимое (предстоящие тренировки, советы) оставляем как есть -->
-                <!-- Предстоящие тренировки -->
+                <!-- Предстоящая тренировка (если есть программа) -->
                 <Border Background="White"
                         CornerRadius="15"
                         Padding="25"
-                        Margin="0,0,0,30">
+                        Margin="0,0,0,30"
+                        Visibility="{Binding HasProgram, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel>
                         <TextBlock Text="📅 Предстоящая тренировка"
                                    FontSize="20"
                                    FontWeight="SemiBold"
                                    Foreground="#2C3E50"
+                                   Margin="0,0,0,10"/>
+                        <TextBlock Text="{Binding ProgramName}" 
+                                   FontSize="18" FontWeight="SemiBold" Foreground="#3498DB"
                                    Margin="0,0,0,20"/>
 
-                        <ListView ItemsSource="{Binding UpcomingWorkouts}"
+                        <ListView ItemsSource="{Binding Exercises}"
                                   BorderThickness="0">
                             <ListView.ItemTemplate>
                                 <DataTemplate>
@@ -104,44 +54,37 @@
                                             BorderThickness="0,0,0,1">
                                         <Grid>
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="Auto"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="Auto"/>
                                             </Grid.ColumnDefinitions>
-
-                                            <StackPanel Grid.Column="0" 
-                                                        Margin="0,0,15,0">
-                                                <TextBlock Text="{Binding Day}"
-                                                           FontSize="16"
-                                                           FontWeight="Bold"
-                                                           Foreground="#3498DB"/>
-                                                <TextBlock Text="{Binding Date}"
-                                                           FontSize="12"
-                                                           Foreground="#7F8C8D"/>
-                                            </StackPanel>
-
-                                            <StackPanel Grid.Column="1">
-                                                <TextBlock Text="{Binding WorkoutName}"
+                                            <StackPanel Grid.Column="0">
+                                                <TextBlock Text="{Binding Name}"
                                                            FontSize="16"
                                                            FontWeight="SemiBold"
                                                            Foreground="#2C3E50"/>
-                                                <TextBlock Text="{Binding Exercises}"
+                                                <TextBlock Text="{Binding SetsReps}"
                                                            FontSize="14"
                                                            Foreground="#7F8C8D"/>
+                                                <TextBlock Text="{Binding EquipmentString}"
+                                                           FontSize="12"
+                                                           Foreground="#7F8C8D"/>
                                             </StackPanel>
-
-                                            <Button Grid.Column="2"
-                                                    Content="Начать"
-                                                    Background="#3498DB"
-                                                    Foreground="White"
-                                                    Padding="15,8"
-                                                    BorderThickness="0"/>
                                         </Grid>
                                     </Border>
                                 </DataTemplate>
                             </ListView.ItemTemplate>
                         </ListView>
                     </StackPanel>
+                </Border>
+
+                <!-- Заглушка, если нет программы -->
+                <Border Background="White"
+                        CornerRadius="15"
+                        Padding="25"
+                        Margin="0,0,0,30"
+                        Visibility="{Binding HasProgram, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                    <TextBlock Text="У вас пока нет активных тренировочных программ. Перейдите в раздел 'Программы', чтобы создать или выбрать программу."
+                               FontSize="14" Foreground="#7F8C8D" TextWrapping="Wrap"/>
                 </Border>
 
                 <!-- Советы и рекомендации -->
@@ -164,7 +107,6 @@
                                            FontSize="14"
                                            Foreground="#2C3E50"/>
                             </Border>
-
                             <Border Padding="15" 
                                     Background="#F8F9FA"
                                     CornerRadius="10"
@@ -173,7 +115,6 @@
                                            FontSize="14"
                                            Foreground="#2C3E50"/>
                             </Border>
-
                             <Border Padding="15" 
                                     Background="#F8F9FA"
                                     CornerRadius="10">

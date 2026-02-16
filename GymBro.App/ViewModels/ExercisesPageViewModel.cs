@@ -4,9 +4,7 @@ using GymBro.Business.Managers;
 using GymBro.Domain.Entities;
 using System;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace GymBro.App.ViewModels
 {
@@ -24,8 +22,6 @@ namespace GymBro.App.ViewModels
             Exercises = new ObservableCollection<Exercise>();
 
             LoadExercisesAsync();
-
-            ViewExerciseCommand = new RelayCommand(ExecuteViewExercise, CanViewExercise);
         }
 
         public ObservableCollection<Exercise> Exercises
@@ -37,14 +33,7 @@ namespace GymBro.App.ViewModels
         public Exercise SelectedExercise
         {
             get => _selectedExercise;
-            set
-            {
-                if (SetProperty(ref _selectedExercise, value))
-                {
-                    // Можно загрузить детали, если нужно
-                    CommandManager.InvalidateRequerySuggested();
-                }
-            }
+            set => SetProperty(ref _selectedExercise, value);
         }
 
         public bool IsLoading
@@ -52,8 +41,6 @@ namespace GymBro.App.ViewModels
             get => _isLoading;
             set => SetProperty(ref _isLoading, value);
         }
-
-        public ICommand ViewExerciseCommand { get; }
 
         private async Task LoadExercisesAsync()
         {
@@ -75,22 +62,6 @@ namespace GymBro.App.ViewModels
             {
                 IsLoading = false;
             }
-        }
-
-        private bool CanViewExercise(object param) => SelectedExercise != null;
-        private void ExecuteViewExercise(object param)
-        {
-            // Открыть детали упражнения, например, показать сообщение или открыть окно
-            string equipment = SelectedExercise.Equipment != null && SelectedExercise.Equipment.Any()
-                ? string.Join(", ", SelectedExercise.Equipment.Select(e => e.Name))
-                : "нет";
-            System.Windows.MessageBox.Show(
-                $"{SelectedExercise.Name}\n\nОписание: {SelectedExercise.Description}\n" +
-                $"Подходы: {SelectedExercise.DefaultSets} x {SelectedExercise.DefaultRepsMin}-{SelectedExercise.DefaultRepsMax}\n" +
-                $"Оборудование: {equipment}\n\n" +
-                $"Советы: {SelectedExercise.TechniqueTips}\n" +
-                $"Ошибки: {SelectedExercise.CommonMistakes}",
-                "Детали упражнения");
         }
     }
 }

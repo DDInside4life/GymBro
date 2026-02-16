@@ -49,10 +49,7 @@ namespace GymBro.DAL.Repositories
 
         public async Task<IEnumerable<TrainingProgram>> FindAsync(Expression<Func<TrainingProgram, bool>> predicate)
         {
-            // Асинхронный метод поиска 
-            return await _dbSet.Include(p => p.UserProfile)
-                              .Where(predicate)
-                              .ToListAsync();
+            return await _dbSet.Include(p => p.Exercises).ThenInclude(e => e.Equipment).Where(predicate).ToListAsync();
         }
 
         public void Create(TrainingProgram entity)
@@ -74,5 +71,7 @@ namespace GymBro.DAL.Repositories
             _dbSet.Remove(entity);
             return true;
         }
+
+
     }
 }

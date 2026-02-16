@@ -61,8 +61,6 @@
                                    FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
                         <TextBlock Text="Продвинутый уровень" Foreground="#3498DB" FontSize="12" 
                                    HorizontalAlignment="Center" Margin="0,5,0,0"/>
-                        <Button Content="Мой профиль" Style="{StaticResource NavigationButtonStyle}" 
-                                Margin="0,15,0,0" Command="{Binding NavigateCommand}" CommandParameter="Profile"/>
                     </StackPanel>
                 </Border>
 
@@ -70,14 +68,14 @@
                 <StackPanel Grid.Row="2" Margin="0,0,0,20">
                     <Button Content="🏠 Главная" Style="{StaticResource NavigationButtonStyle}" 
             Tag="Home" Command="{Binding NavigateCommand}" CommandParameter="Home"/>
-                    <Button Content="📋 Тренировка" Style="{StaticResource NavigationButtonStyle}" 
-            Tag="Workout" Command="{Binding NavigateCommand}" CommandParameter="Workout"/>
                     <Button Content="📊 Программы" Style="{StaticResource NavigationButtonStyle}" 
             Tag="Programs" Command="{Binding NavigateCommand}" CommandParameter="Programs"/>
                     <Button Content="💪 Упражнения" Style="{StaticResource NavigationButtonStyle}" 
             Tag="Exercises" Command="{Binding NavigateCommand}" CommandParameter="Exercises"/>
                     <Button Content="🛠 Оборудование" Style="{StaticResource NavigationButtonStyle}" 
             Tag="Equipment" Command="{Binding NavigateCommand}" CommandParameter="Equipment"/>
+                    <Button Content="👥 Пользователи" Style="{StaticResource NavigationButtonStyle}" 
+            Tag="Users" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
                 </StackPanel>
 
                 <!-- Нижняя часть с информацией -->

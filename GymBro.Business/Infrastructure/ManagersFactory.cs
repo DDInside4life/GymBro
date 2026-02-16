@@ -18,6 +18,13 @@ namespace GymBro.Business.Infrastructure
         private TrainingProgramManager _trainingProgramManager;
         private UserManager _userManager;
         private ExerciseManager _exerciseManager;
+        private EquipmentManager _equipmentManager;
+
+        public EquipmentManager GetEquipmentManager()
+        {
+            return _equipmentManager ??= new EquipmentManager(_unitOfWork);
+        }
+
 
         public ExerciseManager GetExerciseManager()
         {
@@ -36,7 +43,6 @@ namespace GymBro.Business.Infrastructure
             // Создаем UnitOfWork с переданной строкой подключения
             _unitOfWork = new GymBro.DAL.Repositories.EFUnitOfWork(connectionString);
         }
-
 
 
 
