@@ -54,13 +54,12 @@
                 <!-- Карточка профиля пользователя -->
                 <Border Grid.Row="1" Background="#34495E" CornerRadius="10" Margin="15,0,15,20" Padding="15">
                     <StackPanel>
-                        <Ellipse Width="60" Height="60" HorizontalAlignment="Center">
-                            <!-- Здесь можно добавить изображение, но пока пусть будет заглушка -->
-                        </Ellipse>
-                        <TextBlock Text="Кулеш Роман" Foreground="White" FontSize="16" 
-                                   FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <Ellipse Width="60" Height="60" HorizontalAlignment="Center"/>
+                        <TextBlock Text="{Binding CurrentUserName}" Foreground="White" FontSize="16" 
+                   FontWeight="SemiBold" HorizontalAlignment="Center" Margin="0,10,0,0"/>
+                        <!-- уровень можно убрать или оставить заглушку -->
                         <TextBlock Text="Продвинутый уровень" Foreground="#3498DB" FontSize="12" 
-                                   HorizontalAlignment="Center" Margin="0,5,0,0"/>
+                   HorizontalAlignment="Center" Margin="0,5,0,0"/>
                     </StackPanel>
                 </Border>
 
@@ -75,7 +74,8 @@
                     <Button Content="🛠 Оборудование" Style="{StaticResource NavigationButtonStyle}" 
             Tag="Equipment" Command="{Binding NavigateCommand}" CommandParameter="Equipment"/>
                     <Button Content="👥 Пользователи" Style="{StaticResource NavigationButtonStyle}" 
-            Tag="Users" Command="{Binding NavigateCommand}" CommandParameter="Users"/>
+        Tag="Users" Command="{Binding NavigateCommand}" CommandParameter="Users"
+        Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                 </StackPanel>
 
                 <!-- Нижняя часть с информацией -->

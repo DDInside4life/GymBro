@@ -33,7 +33,14 @@ namespace GymBro.App.ViewModels
 
             Programs = new ObservableCollection<TrainingProgram>();
 
-            LoadProgramsAsync();
+            // Загружаем программы при создании
+            Task.Run(() => LoadProgramsAsync()).ContinueWith(t =>
+            {
+                if (t.IsFaulted)
+                {
+                    MessageBox.Show($"Ошибка загрузки: {t.Exception?.InnerException?.Message}");
+                }
+            });
 
             SelectProgramCommand = new RelayCommand(ExecuteSelectProgram, CanSelectProgram);
             CreateProgramCommand = new RelayCommand(ExecuteCreateProgram);
@@ -72,13 +79,14 @@ namespace GymBro.App.ViewModels
             {
                 IsLoading = true;
                 var programs = await _programManager.GetProgramsForCurrentUserAsync(_currentUserProfileId, _isAdmin);
-                Programs.Clear();
-                foreach (var prog in programs)
+                Application.Current.Dispatcher.Invoke(() =>
                 {
-                    // Загружаем упражнения для каждой программы (можно лениво, но лучше через Include в репозитории)
-                    // Убедимся, что навигационное свойство Exercises загружено
-                    Programs.Add(prog);
-                }
+                    Programs.Clear();
+                    foreach (var prog in programs)
+                    {
+                        Programs.Add(prog);
+                    }
+                });
             }
             catch (Exception ex)
             {
@@ -94,7 +102,6 @@ namespace GymBro.App.ViewModels
 
         private void ExecuteSelectProgram(object param)
         {
-            // Сохраняем выбранную программу в сессии
             SessionManager.SelectedProgramId = SelectedProgram?.Id;
             MessageBox.Show($"Программа '{SelectedProgram?.Name}' выбрана. Теперь она будет отображаться на главной странице.", "Успех");
         }
@@ -116,7 +123,6 @@ namespace GymBro.App.ViewModels
         {
             if (SelectedProgram == null) return false;
             if (_isAdmin) return true;
-            // Обычный пользователь может редактировать только свои программы (не шаблоны)
             return SelectedProgram.UserProfileId == _currentUserProfileId && !SelectedProgram.IsTemplate;
         }
 

@@ -47,5 +47,11 @@ namespace GymBro.Business.Managers
             return await _exerciseRepository.FindAsync(e => e.Equipment.Any(eq => eq.Id == equipmentId));
         }
 
+        public async Task CreateExerciseAsync(Exercise exercise)
+        {
+            _exerciseRepository.Create(exercise);
+            await Task.Run(() => _unitOfWork.SaveChanges());
+        }
+
     }
 }

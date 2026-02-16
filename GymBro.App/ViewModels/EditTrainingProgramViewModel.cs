@@ -25,9 +25,9 @@ namespace GymBro.App.ViewModels
 
         public EditTrainingProgramViewModel(TrainingProgram program = null)
         {
-            //var factory = new ManagersFactory();
-            //_programManager = factory.GetTrainingProgramManager();
-            //_exerciseManager = factory.GetExerciseManager();
+            var factory = new ManagersFactory();
+            _programManager = factory.GetTrainingProgramManager();
+            _exerciseManager = factory.GetExerciseManager();
 
             _originalProgram = program;
             if (program != null)
@@ -62,6 +62,7 @@ namespace GymBro.App.ViewModels
         public int Difficulty { get => _difficulty; set => SetProperty(ref _difficulty, value); }
         public int WorkoutsPerWeek { get => _workoutsPerWeek; set => SetProperty(ref _workoutsPerWeek, value); }
         public ObservableCollection<Exercise> Exercises { get => _exercises; set => SetProperty(ref _exercises, value); }
+        public List<string> ProgramTypes { get; } = new List<string> { "Силовая", "Кардио", "Фулбоди", "Сплит", "Набор массы", "Похудение" };
 
         public ICommand OkCommand { get; }
         public ICommand CancelCommand { get; }
@@ -113,6 +114,7 @@ namespace GymBro.App.ViewModels
 
         private async void LoadExercises(int programId)
         {
+            if (_exerciseManager == null) return; // защита
             var exercises = await _exerciseManager.GetExercisesByProgramAsync(programId);
             Exercises = new ObservableCollection<Exercise>(exercises);
         }
@@ -134,6 +136,5 @@ namespace GymBro.App.ViewModels
         }
 
         public event EventHandler<TrainingProgram> CloseRequested;
-        public List<string> ProgramTypes { get; } = new List<string> { "Силовая", "Кардио", "Фулбоди", "Сплит", "Набор массы", "Похудение" };
     }
 }

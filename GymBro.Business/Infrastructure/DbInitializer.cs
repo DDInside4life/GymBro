@@ -45,7 +45,7 @@ namespace GymBro.Business.Infrastructure
                     CommonMistakes = "Слишком широкий хват, отбив штанги от груди",
                     ImageUrl = "benchpress.jpg",
                     VideoUrl = "benchpress.mp4",
-                    Equipment = new List<Equipment> { equipmentList[0], equipmentList[2] } // штанга, скамья
+                    Equipment = new List<Equipment> { equipmentList[0], equipmentList[2] }
                 },
                 new Exercise
                 {
@@ -59,7 +59,7 @@ namespace GymBro.Business.Infrastructure
                     CommonMistakes = "Округление спины, недостаточная глубина",
                     ImageUrl = "squat.jpg",
                     VideoUrl = "squat.mp4",
-                    Equipment = new List<Equipment> { equipmentList[0] } // штанга
+                    Equipment = new List<Equipment> { equipmentList[0] }
                 },
                 new Exercise
                 {
@@ -73,7 +73,7 @@ namespace GymBro.Business.Infrastructure
                     CommonMistakes = "Рывки корпусом, слишком широкий хват",
                     ImageUrl = "latpulldown.jpg",
                     VideoUrl = "latpulldown.mp4",
-                    Equipment = new List<Equipment> { equipmentList[4] } // турник
+                    Equipment = new List<Equipment> { equipmentList[4] }
                 },
                 new Exercise
                 {
@@ -87,7 +87,7 @@ namespace GymBro.Business.Infrastructure
                     CommonMistakes = "Держание за поручни, слишком большой наклон",
                     ImageUrl = "treadmill.jpg",
                     VideoUrl = "treadmill.mp4",
-                    Equipment = new List<Equipment> { equipmentList[3] } // беговая дорожка
+                    Equipment = new List<Equipment> { equipmentList[3] }
                 },
                 new Exercise
                 {
@@ -101,7 +101,7 @@ namespace GymBro.Business.Infrastructure
                     CommonMistakes = "Рывки, неполная амплитуда",
                     ImageUrl = "pullups.jpg",
                     VideoUrl = "pullups.mp4",
-                    Equipment = new List<Equipment> { equipmentList[4] } // турник
+                    Equipment = new List<Equipment> { equipmentList[4] }
                 }
             };
             context.Exercises.AddRange(exercises);
@@ -186,6 +186,16 @@ namespace GymBro.Business.Infrastructure
             context.TrainingPrograms.AddRange(programs);
             context.SaveChanges();
 
+            // Добавляем роли
+            if (!context.Roles.Any())
+            {
+                context.Roles.AddRange(
+                    new Role { Name = "Admin" },
+                    new Role { Name = "User" }
+                );
+                context.SaveChanges();
+            }
+
             // Добавляем тестового пользователя для входа
             if (!context.Users.Any())
             {
@@ -198,24 +208,17 @@ namespace GymBro.Business.Infrastructure
                 };
                 context.Users.Add(testUser);
                 context.SaveChanges();
-            }
 
-            // Добавляем роли
-            if (!context.Roles.Any())
-            {
-                context.Roles.AddRange(
-                    new Role { Name = "Admin" },
-                    new Role { Name = "User" }
-                );
-                context.SaveChanges();
-            }
+                // Назначаем роль Admin
+                var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
+                if (adminRole != null)
+                {
+                    testUser.Roles = new List<Role> { adminRole };
+                    context.SaveChanges();
+                }
 
-            // Назначаем роль Admin пользователю admin
-            var adminRole = context.Roles.FirstOrDefault(r => r.Name == "Admin");
-            var adminUser = context.Users.FirstOrDefault(u => u.Login == "admin");
-            if (adminUser != null && adminRole != null)
-            {
-                adminUser.Roles = new List<Role> { adminRole };
+                // Привязываем к первому профилю (Кулеш Роман)
+                testUser.UserProfileId = userIds[0];
                 context.SaveChanges();
             }
 
@@ -224,40 +227,40 @@ namespace GymBro.Business.Infrastructure
             {
                 var templates = new[]
                 {
-        new TrainingProgram
-        {
-            Name = "Силовая программа для начинающих",
-            Description = "Базовая силовая программа",
-            ProgramType = "Силовая",
-            DurationWeeks = 8,
-            Difficulty = 2,
-            WorkoutsPerWeek = 3,
-            CreatedDate = DateTime.Now,
-            IsTemplate = true
-        },
-        new TrainingProgram
-        {
-            Name = "Кардио для похудения",
-            Description = "Интенсивное кардио",
-            ProgramType = "Кардио",
-            DurationWeeks = 6,
-            Difficulty = 3,
-            WorkoutsPerWeek = 4,
-            CreatedDate = DateTime.Now,
-            IsTemplate = true
-        },
-        new TrainingProgram
-        {
-            Name = "Фулбоди для всех",
-            Description = "Круговая тренировка",
-            ProgramType = "Фулбоди",
-            DurationWeeks = 4,
-            Difficulty = 1,
-            WorkoutsPerWeek = 2,
-            CreatedDate = DateTime.Now,
-            IsTemplate = true
-        }
-    };
+                    new TrainingProgram
+                    {
+                        Name = "Силовая программа для начинающих",
+                        Description = "Базовая силовая программа",
+                        ProgramType = "Силовая",
+                        DurationWeeks = 8,
+                        Difficulty = 2,
+                        WorkoutsPerWeek = 3,
+                        CreatedDate = DateTime.Now,
+                        IsTemplate = true
+                    },
+                    new TrainingProgram
+                    {
+                        Name = "Кардио для похудения",
+                        Description = "Интенсивное кардио",
+                        ProgramType = "Кардио",
+                        DurationWeeks = 6,
+                        Difficulty = 3,
+                        WorkoutsPerWeek = 4,
+                        CreatedDate = DateTime.Now,
+                        IsTemplate = true
+                    },
+                    new TrainingProgram
+                    {
+                        Name = "Фулбоди для всех",
+                        Description = "Круговая тренировка",
+                        ProgramType = "Фулбоди",
+                        DurationWeeks = 4,
+                        Difficulty = 1,
+                        WorkoutsPerWeek = 2,
+                        CreatedDate = DateTime.Now,
+                        IsTemplate = true
+                    }
+                };
                 context.TrainingPrograms.AddRange(templates);
                 context.SaveChanges();
             }

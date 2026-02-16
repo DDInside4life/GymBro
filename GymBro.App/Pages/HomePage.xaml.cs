@@ -13,6 +13,7 @@ namespace GymBro.App.Pages
         public HomePage()
         {
             InitializeComponent();
+            Loaded += async (s, e) => await ((HomePageViewModel)DataContext).RefreshDataAsync();
             DataContext = new HomePageViewModel();
         }
 

@@ -20,6 +20,12 @@ namespace GymBro.App.ViewModels
         private ObservableCollection<ExerciseDisplay> _exercises;
         private bool _isLoading;
 
+
+        public async Task RefreshDataAsync()
+        {
+            await LoadDataAsync();
+        }
+
         public HomePageViewModel()
         {
             var factory = new ManagersFactory();

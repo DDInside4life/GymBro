@@ -1,10 +1,14 @@
 ﻿using GymBro.App.Commands;
+using GymBro.App.Infrastructure;
 using GymBro.Business.Infrastructure;
 using GymBro.Business.Managers;
 using GymBro.Domain.Entities;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using System;
+using System.Windows;
 
 namespace GymBro.App.ViewModels
 {
@@ -14,15 +18,46 @@ namespace GymBro.App.ViewModels
         private ObservableCollection<Exercise> _exercises;
         private Exercise _selectedExercise;
         private bool _isLoading;
+        private readonly EquipmentManager _equipmentManager;
+        private readonly bool _isAdmin;
+
+        public ICommand AddExerciseCommand { get; }
 
         public ExercisesPageViewModel()
         {
             var factory = new ManagersFactory();
             _exerciseManager = factory.GetExerciseManager();
+            _equipmentManager = factory.GetEquipmentManager();
+            _isAdmin = SessionManager.IsInRole("Admin");
             Exercises = new ObservableCollection<Exercise>();
-
             LoadExercisesAsync();
+            AddExerciseCommand = new RelayCommand(ExecuteAddExercise, _ => _isAdmin);
         }
+
+        private async void ExecuteAddExercise(object param)
+        {
+            var allEquipment = (await _equipmentManager.GetAllEquipmentAsync()).ToList();
+            var dialog = new Views.EditExerciseWindow(null, allEquipment);
+            dialog.Owner = Application.Current.MainWindow;
+            if (dialog.ShowDialog() == true)
+            {
+                var newExercise = new Exercise
+                {
+                    Name = dialog.ExerciseName,
+                    Description = dialog.ExerciseDescription,
+                    DefaultSets = dialog.DefaultSets,
+                    DefaultRepsMin = dialog.RepsMin,
+                    DefaultRepsMax = dialog.RepsMax,
+                    RestBetweenSets = TimeSpan.FromSeconds(dialog.RestSeconds),
+                    TechniqueTips = dialog.TechniqueTips,
+                    CommonMistakes = dialog.CommonMistakes,
+                    Equipment = dialog.SelectedEquipment
+                };
+                await _exerciseManager.CreateExerciseAsync(newExercise);
+                await LoadExercisesAsync(); // перезагрузить список
+            }
+        }
+
 
         public ObservableCollection<Exercise> Exercises
         {

@@ -17,9 +17,7 @@
         <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxStyle}">
             <Setter Property="Margin" Value="0,0,0,10"/>
         </Style>
-        <Style TargetType="ComboBox" BasedOn="{StaticResource TextBoxStyle}">
-            <Setter Property="Margin" Value="0,0,0,10"/>
-        </Style>
+      
         <Style x:Key="CardListBoxStyle" TargetType="ListBox" BasedOn="{StaticResource CardListBoxStyle}">
             <Setter Property="Margin" Value="0,0,0,10"/>
             <Setter Property="Height" Value="150"/>
